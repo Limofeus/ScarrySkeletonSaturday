@@ -1,5 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://bvwy2luk6g1je"]
+[gd_scene load_steps=17 format=3 uid="uid://bvwy2luk6g1je"]
 
+[ext_resource type="Texture2D" uid="uid://npwcvk5vjtu" path="res://sprites/menu/VoynichBG.png" id="1_4qeuo"]
+[ext_resource type="Material" uid="uid://bk5ol55ebtuwr" path="res://materials/scroll_material.tres" id="1_7jw06"]
 [ext_resource type="Texture2D" uid="uid://c2m4p1keindis" path="res://sprites/menu/MagicCircle1-min.png" id="1_otpi2"]
 [ext_resource type="Texture2D" uid="uid://bi505anobcbfq" path="res://sprites/menu/red-skull-mask-circle.png" id="2_6id2d"]
 [ext_resource type="Script" path="res://scripts/ui/rotate_control_node.gd" id="2_jdmkp"]
@@ -39,6 +41,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ColorRect" type="ColorRect" parent="Ui/Menu"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,6 +49,19 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 0, 0, 1)
+
+[node name="BgTexture" type="TextureRect" parent="Ui/Menu"]
+texture_filter = 4
+texture_repeat = 2
+material = ExtResource("1_7jw06")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_4qeuo")
+expand_mode = 5
 
 [node name="ColorRect2" type="ColorRect" parent="Ui/Menu"]
 custom_minimum_size = Vector2(0, 20)
