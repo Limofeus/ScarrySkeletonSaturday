@@ -1,0 +1,66 @@
+[gd_scene load_steps=9 format=3 uid="uid://dj8mwl652scy"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_wkevj"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_1yl5r"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="3_vcoie"]
+[ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="4_37g85"]
+[ext_resource type="Script" path="res://scripts/components/basic/projectile_component.gd" id="5_2kotq"]
+[ext_resource type="Script" path="res://scripts/debug/debug_offset_position_sync.gd" id="6_2418j"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_nlcoi"]
+radius = 0.125
+height = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cu23y"]
+radius = 0.125
+
+[node name="NetworkProjectileTest" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_wkevj")
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="SpawnTransformSetter" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("positional_node")]
+script = ExtResource("2_1yl5r")
+positional_node = NodePath("../../Projectile")
+
+[node name="ProcessEnabler" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("nodes_to_process")]
+script = ExtResource("3_vcoie")
+nodes_to_process = [NodePath("../../SharedLogic/Projectile")]
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="DestructionComponent" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("4_37g85")
+network_entity = NodePath("../..")
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="Projectile" type="Node" parent="SharedLogic" node_paths=PackedStringArray("projectile_node", "shape_cast", "entity_destruction_component", "network_entity")]
+script = ExtResource("5_2kotq")
+projectile_node = NodePath("../../Projectile")
+shape_cast = NodePath("../../Projectile/ShapeCast3D")
+entity_destruction_component = NodePath("../../OwnerLogic/DestructionComponent")
+velocity = Vector3(0, 0, -20)
+network_entity = NodePath("../..")
+
+[node name="OptimizedPositionSync" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("6_2418j")
+node_to_sync = NodePath("../../Projectile")
+offset = Vector3(1, 0, 0)
+network_entity = NodePath("../..")
+
+[node name="Projectile" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Projectile"]
+mesh = SubResource("SphereMesh_nlcoi")
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="Projectile"]
+shape = SubResource("SphereShape3D_cu23y")
+target_position = Vector3(0, 0, -3)
+collision_mask = 23
+debug_shape_custom_color = Color(1, 0, 0, 1)
+
+[connection signal="entity_ready" from="." to="SharedLogic/Projectile" method="start_destroy_timer"]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://hrjls8vytb25"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_coxrj"]
+
+[node name="NetworkEntityEnemy" type="Node" node_paths=PackedStringArray("ownerLogic", "sharedLogic")]
+script = ExtResource("1_coxrj")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="HealthComponent" type="Node" parent="SharedLogic"]
+
+[node name="HittableComponent" type="Node" parent="SharedLogic"]
+
+[node name="DyingComponent" type="Node" parent="SharedLogic"]

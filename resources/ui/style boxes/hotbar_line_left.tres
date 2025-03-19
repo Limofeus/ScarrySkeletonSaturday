@@ -1,0 +1,8 @@
+[gd_resource type="StyleBoxTexture" load_steps=2 format=3 uid="uid://dg2rcgoynsnl7"]
+
+[ext_resource type="Texture2D" uid="uid://doi3036p57tsq" path="res://sprites/ui_old/hotbar_line_dynamic_left.png" id="1_wy331"]
+
+[resource]
+texture = ExtResource("1_wy331")
+texture_margin_left = 40.0
+texture_margin_right = 50.0

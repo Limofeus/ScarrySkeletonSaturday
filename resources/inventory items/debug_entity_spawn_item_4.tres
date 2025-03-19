@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="EntitySpawnerItem" load_steps=5 format=3 uid="uid://cpxici5k6jy3q"]
+
+[ext_resource type="Texture2D" uid="uid://blb8dwjc4v0gg" path="res://sprites/testing/test_texture.png" id="1_287d0"]
+[ext_resource type="PackedScene" uid="uid://o8mimpwaxmjg" path="res://scenes/testing_3d/dummy test scenes/roomba_creature_test.tscn" id="2_7vceh"]
+[ext_resource type="Script" path="res://scripts/resources/inventory/items/entity_spawner_item.gd" id="3_akhlo"]
+[ext_resource type="PackedScene" uid="uid://btcr3jt8wthqt" path="res://scenes/items/tools/test_tool_display_1.tscn" id="4_7dgks"]
+
+[resource]
+script = ExtResource("3_akhlo")
+scene_to_instantiate = ExtResource("2_7vceh")
+spawn_from_position = 0
+position_offset = 0.6
+tool_scene = ExtResource("4_7dgks")
+select_string = "Select"
+name = "ROOMBA"
+description = "Item description"
+stackable = false
+icon = ExtResource("1_287d0")

@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://6ypd48k7kbjj"]
+
+[ext_resource type="Script" path="res://scripts/ui/hotbar/hotbar.gd" id="1_71y6h"]
+[ext_resource type="PackedScene" uid="uid://knu7xi3jljm5" path="res://scenes/ui/hotbar_item_slot.tscn" id="1_chxdw"]
+[ext_resource type="StyleBox" uid="uid://dg2rcgoynsnl7" path="res://resources/ui/style boxes/hotbar_line_left.tres" id="2_oesvb"]
+[ext_resource type="StyleBox" uid="uid://dj5wdn4abk8q8" path="res://resources/ui/style boxes/hotbar_line_right.tres" id="3_p2ysk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dmry"]
+bg_color = Color(0, 0, 0, 0.556863)
+draw_center = false
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q4v3e"]
+bg_color = Color(0, 0, 0, 0.588235)
+border_width_left = 50
+border_width_top = 5
+border_width_right = 50
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="Hotbar" type="Control"]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+scale = Vector2(0.4, 0.4)
+
+[node name="Hotbar" type="Node" parent="." node_paths=PackedStringArray("slot_container", "left_hotbar_underline")]
+script = ExtResource("1_71y6h")
+slot_container = NodePath("../Panel/MarginContainer/HBoxContainer")
+left_hotbar_underline = NodePath("../Panel/HBoxContainer/LeftHotbarUnderline")
+hotbar_slot_scene = ExtResource("1_chxdw")
+
+[node name="Panel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(0, 365.855)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -118.0
+offset_right = 118.0
+offset_bottom = 298.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_2dmry")
+
+[node name="Panel" type="Panel" parent="Panel"]
+visible = false
+custom_minimum_size = Vector2(0, 230.95)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_q4v3e")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(2150, 0)
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="LeftHotbarUnderline" type="PanelContainer" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(153.3, 107)
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_styles/panel = ExtResource("2_oesvb")
+
+[node name="RightHotbarUnderline" type="PanelContainer" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(0, 107)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+theme_override_styles/panel = ExtResource("3_p2ysk")

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://crpmsfidp18i"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_414v8"]
+[ext_resource type="Script" path="res://scripts/debug/testing/test_IR_component.gd" id="2_jj2m4"]
+
+[node name="NetworkEntityTest1" type="Node" node_paths=PackedStringArray("ownerLogic", "sharedLogic")]
+script = ExtResource("1_414v8")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="SomeComponent" type="Node" parent="SharedLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("2_jj2m4")
+network_entity = NodePath("../..")

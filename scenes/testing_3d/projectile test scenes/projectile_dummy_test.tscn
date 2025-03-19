@@ -1,0 +1,92 @@
+[gd_scene load_steps=16 format=3 uid="uid://dd3oefx71phog"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_eewlo"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_d4hii"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="3_hcai0"]
+[ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="4_epte8"]
+[ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="5_r813d"]
+[ext_resource type="Script" path="res://scripts/components/basic/projectile_component.gd" id="6_2hwkq"]
+[ext_resource type="Script" path="res://scripts/components/sync/optimized_position_sync.gd" id="7_2csuh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwpfi"]
+albedo_color = Color(0.196071, 0.25379, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pptr8"]
+albedo_color = Color(0.373333, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v810s"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgx2d"]
+albedo_color = Color(1, 0.666667, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mef3i"]
+albedo_color = Color(0.773333, 0.2, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbpn1"]
+albedo_color = Color(0.2, 1, 0.986667, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_nlcoi"]
+radius = 0.125
+height = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_cu23y"]
+radius = 0.125
+
+[node name="NetworkProjectileTest" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_eewlo")
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="SpawnTransformSetter" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("positional_node")]
+script = ExtResource("2_d4hii")
+positional_node = NodePath("../../Projectile")
+
+[node name="ProcessEnabler" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("nodes_to_process")]
+script = ExtResource("3_hcai0")
+nodes_to_process = [NodePath("../../SharedLogic/Projectile")]
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="DestructionComponent" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("nodes_to_disable", "network_entity")]
+script = ExtResource("4_epte8")
+nodes_to_disable = [NodePath("../../SharedLogic/Projectile"), NodePath("../../SharedLogic/OptimizedPositionSync")]
+network_entity = NodePath("../..")
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
+script = ExtResource("5_r813d")
+materials = Array[Material]([SubResource("StandardMaterial3D_uwpfi"), SubResource("StandardMaterial3D_pptr8"), SubResource("StandardMaterial3D_v810s"), SubResource("StandardMaterial3D_lgx2d"), SubResource("StandardMaterial3D_mef3i"), SubResource("StandardMaterial3D_pbpn1")])
+mesh = NodePath("../../Projectile/MeshInstance3D")
+network_entity = NodePath("../..")
+
+[node name="Projectile" type="Node" parent="SharedLogic" node_paths=PackedStringArray("projectile_node", "shape_cast", "entity_destruction_component", "network_entity")]
+script = ExtResource("6_2hwkq")
+projectile_node = NodePath("../../Projectile")
+shape_cast = NodePath("../../Projectile/ShapeCast3D")
+entity_destruction_component = NodePath("../../OwnerLogic/DestructionComponent")
+velocity = Vector3(0, 0, -20)
+network_entity = NodePath("../..")
+
+[node name="OptimizedPositionSync" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("7_2csuh")
+node_to_sync = NodePath("../../Projectile")
+network_entity = NodePath("../..")
+
+[node name="Projectile" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Projectile"]
+mesh = SubResource("SphereMesh_nlcoi")
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="Projectile"]
+shape = SubResource("SphereShape3D_cu23y")
+target_position = Vector3(0, 0, -3)
+collision_mask = 23
+debug_shape_custom_color = Color(1, 0, 0, 1)
+
+[connection signal="authority_changed" from="." to="SharedLogic/SetMaterialBasedOnOwner" method="_on_entity_authority_change"]
+[connection signal="entity_ready" from="." to="SharedLogic/Projectile" method="start_destroy_timer"]

@@ -1,0 +1,319 @@
+[gd_scene load_steps=67 format=3 uid="uid://wfxknyuxwqwx"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_cvc60"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_fay04"]
+[ext_resource type="Script" path="res://scripts/components/player/head_rotation.gd" id="3_lk1we"]
+[ext_resource type="Script" path="res://scripts/components/player/camera_mounter.gd" id="4_k225t"]
+[ext_resource type="Script" path="res://scripts/components/attribute holders/player_attributes.gd" id="5_e7k1b"]
+[ext_resource type="Script" path="res://scripts/components/controllers/state_machine.gd" id="6_rh1aa"]
+[ext_resource type="Script" path="res://scripts/states/player states/player_movement_state.gd" id="7_vj1x5"]
+[ext_resource type="Script" path="res://scripts/states/player states/player_glide_state.gd" id="12_i0yer"]
+[ext_resource type="Script" path="res://scripts/debug/debug_mount_menu.gd" id="13_pj5ou"]
+[ext_resource type="Script" path="res://scripts/components/spawning/positional_spawner.gd" id="14_dq2pm"]
+[ext_resource type="Script" path="res://scripts/debug/debug_spawn_menu.gd" id="15_865cn"]
+[ext_resource type="PackedScene" uid="uid://c21rixqn4o18" path="res://scenes/testing_3d/dummy test scenes/network_dummy_cube_test_3d.tscn" id="16_282gi"]
+[ext_resource type="PackedScene" uid="uid://cd1h8aooqomdx" path="res://scenes/testing_3d/dummy test scenes/owner_change_dummy_cube_test.tscn" id="17_5s0p8"]
+[ext_resource type="PackedScene" uid="uid://154rpf0m8pk6" path="res://scenes/testing_3d/dummy test scenes/physics_dummy_cube_test.tscn" id="18_68fek"]
+[ext_resource type="PackedScene" uid="uid://1jrsjch8aybs" path="res://scenes/testing_3d/dummy test scenes/mountable_dummy_test.tscn" id="19_a1r1e"]
+[ext_resource type="PackedScene" uid="uid://dpvuhck23m5di" path="res://scenes/testing_3d/dummy test scenes/complex_entity_mountable_dummy_test.tscn" id="20_kjsqo"]
+[ext_resource type="PackedScene" uid="uid://c473fem1p0lby" path="res://scenes/testing_3d/dummy test scenes/interactable_area_test.tscn" id="21_dwcku"]
+[ext_resource type="PackedScene" uid="uid://bcomxf3sgu8dh" path="res://scenes/testing_3d/dummy test scenes/shooter1_interactable_area_test.tscn" id="22_pqna6"]
+[ext_resource type="PackedScene" uid="uid://cjt0bj8vh4agl" path="res://scenes/testing_3d/dummy test scenes/shooter2_interactable_area_test.tscn" id="23_hn4cu"]
+[ext_resource type="Script" path="res://scripts/debug/testing/owner_authority_on_ready_test.gd" id="24_h21nw"]
+[ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="25_fmqg4"]
+[ext_resource type="Script" path="res://scripts/components/utility/visible_if_owner.gd" id="27_i6lo2"]
+[ext_resource type="Script" path="res://scripts/networking/interactions/utility/owner_change_interaction.gd" id="29_ei4hy"]
+[ext_resource type="Script" path="res://scripts/components/interaction/body_based_interaction_start.gd" id="36_0jq75"]
+[ext_resource type="Resource" uid="uid://ddcp4d8og028m" path="res://resources/inventory items/debug_tool_item_1.tres" id="37_27dit"]
+[ext_resource type="Script" path="res://scripts/components/player/movement_effects_parameters_send.gd" id="37_ymqdg"]
+[ext_resource type="Script" path="res://scripts/components/input/player_input.gd" id="38_5h1rp"]
+[ext_resource type="Resource" uid="uid://bl8op6r2i3nce" path="res://resources/inventory items/debug_entity_spawn_item_1.tres" id="38_jxtek"]
+[ext_resource type="Script" path="res://scripts/components/player/loaded_chunks_send.gd" id="38_rjx8m"]
+[ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/display_tool_item.gd" id="38_x7th7"]
+[ext_resource type="Resource" uid="uid://3cr3bwmf6e5g" path="res://resources/inventory items/debug_entity_spawn_item_2.tres" id="39_4p146"]
+[ext_resource type="Script" path="res://scripts/components/inventory/player_hotbar_component.gd" id="39_nqsyj"]
+[ext_resource type="Script" path="res://scripts/components/inventory/creature_item_user.gd" id="39_st2eu"]
+[ext_resource type="Resource" uid="uid://dyhthiqjvk10u" path="res://resources/inventory items/debug_entity_spawn_item_3.tres" id="40_a4sfx"]
+[ext_resource type="Script" path="res://scripts/components/inventory/player_inventory_component.gd" id="40_djfaj"]
+[ext_resource type="Script" path="res://scripts/debug/testing/test_inv_item_adder.gd" id="41_ma63x"]
+[ext_resource type="Script" path="res://scripts/components/sync/optimized_rotation_sync.gd" id="41_wro33"]
+[ext_resource type="Script" path="res://scripts/resources/inventory/items/inventory_item.gd" id="42_ua6o8"]
+[ext_resource type="Resource" uid="uid://c6mr55mopgmnh" path="res://resources/inventory items/debug_item_1.tres" id="43_11h6d"]
+[ext_resource type="Resource" uid="uid://dd8pji5ufqoba" path="res://resources/inventory items/debug_item_2.tres" id="44_xgorc"]
+[ext_resource type="Resource" uid="uid://c62x15lixj7tv" path="res://resources/inventory items/debug_item_3.tres" id="45_gx3kw"]
+[ext_resource type="Script" path="res://scripts/components/sync/position_sync.gd" id="46_lcexw"]
+[ext_resource type="Script" path="res://scripts/debug/debug_interactable_zone.gd" id="47_0qn51"]
+[ext_resource type="PackedScene" uid="uid://saxv52hm6fdc" path="res://scenes/testing_visual/peojectile_hit_mark_red.tscn" id="48_3y88t"]
+[ext_resource type="PackedScene" uid="uid://bdog4nuqi8171" path="res://scenes/testing_visual/peojectile_hit_mark_orange.tscn" id="49_dboq1"]
+[ext_resource type="Script" path="res://scripts/per object logic/visual_mine_trigger.gd" id="50_0eynp"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwpfi"]
+albedo_color = Color(0.196071, 0.25379, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pptr8"]
+albedo_color = Color(0.373333, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v810s"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgx2d"]
+albedo_color = Color(1, 0.666667, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mef3i"]
+albedo_color = Color(0.773333, 0.2, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbpn1"]
+albedo_color = Color(0.2, 1, 0.986667, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_efjlv"]
+
+[sub_resource type="PackedScene" id="PackedScene_40ngh"]
+_bundled = {
+"conn_count": 3,
+"conns": PackedInt32Array(1073741833, 1073741832, 32, 31, 2, 0, 0, 1073741835, 1073741834, 34, 33, 2, 0, 0, 1073741837, 1073741836, 36, 35, 2, 0, 0),
+"editable_instances": [],
+"names": PackedStringArray("NetworkDummyCube", "Node", "script", "spawn_logic", "ownerLogic", "sharedLogic", "SpawnLogic", "Node", "SpawnTransformSetter", "Node", "script", "positional_node", "OwnerLogic", "Node", "TestAuthority", "Node", "script", "network_entity", "SharedLogic", "Node", "SetMaterialBasedOnOwner", "Node", "script", "materials", "mesh", "network_entity", "Node3D", "Node3D", "MeshInstance3D", "MeshInstance3D", "mesh", "entity_authority_change", "authority_changed", "_on_entity_authority_change", "authority_changed", "entity_ready", "entity_ready"),
+"node_count": 9,
+"node_paths": [NodePath("."), NodePath("./SpawnLogic"), NodePath("."), NodePath("./OwnerLogic"), NodePath("."), NodePath("./SharedLogic"), NodePath("."), NodePath("./Node3D"), NodePath("OwnerLogic/TestAuthority"), NodePath("."), NodePath("SharedLogic/SetMaterialBasedOnOwner"), NodePath("."), NodePath("OwnerLogic/TestAuthority"), NodePath(".")],
+"nodes": PackedInt32Array(-1, -1, 1, 0, -1, 4, 2, 0, 1073741827, 1, 1073741828, 2, 1073741829, 3, 0, 1073741824, 0, 7, 6, -1, 0, 0, 1073741825, 0, 9, 8, -1, 2, 10, 4, 1073741835, 5, 0, 1073741826, 0, 13, 12, -1, 0, 0, 1073741827, 0, 15, 14, -1, 2, 16, 6, 1073741841, 7, 0, 1073741828, 0, 19, 18, -1, 0, 0, 1073741829, 0, 21, 20, -1, 4, 22, 8, 23, 9, 1073741848, 10, 1073741849, 11, 0, 1073741830, 0, 27, 26, -1, 0, 0, 1073741831, 0, 29, 28, -1, 1, 30, 12, 0),
+"variants": [ExtResource("1_cvc60"), NodePath("SpawnLogic"), NodePath("OwnerLogic"), NodePath("SharedLogic"), ExtResource("2_fay04"), NodePath("../../Node3D"), ExtResource("24_h21nw"), NodePath("../.."), ExtResource("25_fmqg4"), Array[Material]([SubResource("StandardMaterial3D_uwpfi"), SubResource("StandardMaterial3D_pptr8"), SubResource("StandardMaterial3D_v810s"), SubResource("StandardMaterial3D_lgx2d"), SubResource("StandardMaterial3D_mef3i"), SubResource("StandardMaterial3D_pbpn1")]), NodePath("../../Node3D/MeshInstance3D"), NodePath("../.."), SubResource("BoxMesh_efjlv")],
+"version": 3
+}
+
+[sub_resource type="Resource" id="Resource_mo1ii"]
+script = ExtResource("29_ei4hy")
+auto_set_owner = true
+new_owner = 0
+authority_interaction_priority = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wuj5g"]
+albedo_color = Color(0.196071, 0.25379, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rjudh"]
+albedo_color = Color(0.373333, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ttwh"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qgny7"]
+albedo_color = Color(1, 0.666667, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_www38"]
+albedo_color = Color(0.773333, 0.2, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qr1bo"]
+albedo_color = Color(0.2, 1, 0.986667, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hj1vt"]
+albedo_color = Color(0.520433, 1, 0.235412, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ekfel"]
+radius = 0.3
+height = 1.75
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_atlbh"]
+top_radius = 0.05
+bottom_radius = 0.1
+height = 0.25
+cap_bottom = false
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ws0uc"]
+radius = 0.3
+height = 1.75
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qlogj"]
+
+[node name="NetworkPlayerTest" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_cvc60")
+authority_interaction_priority = 1
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="SpawnTransformSetter" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("positional_node")]
+script = ExtResource("2_fay04")
+positional_node = NodePath("../../Player")
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="HeadRotation" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("head_node", "look_node", "network_entity")]
+script = ExtResource("3_lk1we")
+head_node = NodePath("../../Player/Head")
+look_node = NodePath("../../Player/Head/CameraMount")
+network_entity = NodePath("../..")
+
+[node name="CameraMounter" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("camera_mount", "network_entity")]
+script = ExtResource("4_k225t")
+camera_mount = NodePath("../../Player/Head/CameraMount")
+unsynced_node_path = "/root/Main/CameraRig"
+network_entity = NodePath("../..")
+
+[node name="PlayerAttributes" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("character_body", "head_node", "look_node", "spatial_node", "network_entity")]
+script = ExtResource("5_e7k1b")
+character_body = NodePath("../../Player")
+head_node = NodePath("../../Player/Head")
+look_node = NodePath("../../Player/Head/CameraMount")
+spatial_node = NodePath("../../Player")
+network_entity = NodePath("../..")
+
+[node name="PlayerStateMachine" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("current_state", "network_entity")]
+script = ExtResource("6_rh1aa")
+current_state = NodePath("MovementState")
+network_entity = NodePath("../..")
+
+[node name="MovementState" type="Node" parent="OwnerLogic/PlayerStateMachine" node_paths=PackedStringArray("player_attributes", "next_states")]
+script = ExtResource("7_vj1x5")
+player_attributes = NodePath("../../PlayerAttributes")
+speed_mult = 0.7
+next_states = [NodePath("../GroundGlideState")]
+
+[node name="GroundGlideState" type="Node" parent="OwnerLogic/PlayerStateMachine" node_paths=PackedStringArray("player_attributes", "next_states")]
+script = ExtResource("12_i0yer")
+player_attributes = NodePath("../../PlayerAttributes")
+speed_mult = 1.1
+next_states = [NodePath("../MovementState")]
+
+[node name="DebugMountButton" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("raycast_entity_get")]
+script = ExtResource("13_pj5ou")
+raycast_entity_get = NodePath("../../Player/Head/CameraMount/BodyRaycast")
+
+[node name="PositionalSpawner" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("14_dq2pm")
+network_entity = NodePath("../..")
+
+[node name="DebugSpawnMenu" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("positional_spawner", "raycast_position_get", "network_entity")]
+script = ExtResource("15_865cn")
+positional_spawner = NodePath("../PositionalSpawner")
+spawnable_entities = Array[PackedScene]([ExtResource("16_282gi"), ExtResource("17_5s0p8"), ExtResource("18_68fek"), ExtResource("19_a1r1e"), ExtResource("20_kjsqo"), ExtResource("21_dwcku"), ExtResource("22_pqna6"), ExtResource("23_hn4cu"), SubResource("PackedScene_40ngh")])
+raycast_position_get = NodePath("../../Player/Head/CameraMount/BodyRaycast")
+network_entity = NodePath("../..")
+
+[node name="PlayerBodyVisibility" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("node_to_make_visible", "network_entity")]
+script = ExtResource("27_i6lo2")
+node_to_make_visible = NodePath("../../Player/MeshInstance3D")
+visible_to_owner = false
+network_entity = NodePath("../..")
+
+[node name="PhysicsPropagation" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("36_0jq75")
+interaction = SubResource("Resource_mo1ii")
+network_entity = NodePath("../..")
+
+[node name="MovementEffectsSend" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("player_body", "network_entity")]
+script = ExtResource("37_ymqdg")
+player_body = NodePath("../../Player")
+unsynced_node_path = "/root/Main/CameraRig/MovementEffects"
+network_entity = NodePath("../..")
+
+[node name="ChunkLoader" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("player_body", "network_entity")]
+script = ExtResource("38_rjx8m")
+player_body = NodePath("../../Player")
+unsynced_node_path = "/root/Main/ChunkManager"
+network_entity = NodePath("../..")
+
+[node name="PlayerHotbar" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("creature_inventory", "network_entity")]
+script = ExtResource("39_nqsyj")
+creature_inventory = NodePath("../../SharedLogic/PlayerInventory")
+unsynced_node_path = "/root/Main/UI Layer/UI/Hotbar/Hotbar"
+network_entity = NodePath("../..")
+
+[node name="DebugInvitemAdder" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("player_inventory")]
+script = ExtResource("41_ma63x")
+player_inventory = NodePath("../../SharedLogic/PlayerInventory")
+debug_items = Array[ExtResource("42_ua6o8")]([ExtResource("43_11h6d"), ExtResource("44_xgorc"), ExtResource("45_gx3kw"), ExtResource("37_27dit"), ExtResource("38_jxtek"), ExtResource("39_4p146"), ExtResource("40_a4sfx")])
+
+[node name="PlayerInputWIP" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("38_5h1rp")
+network_entity = NodePath("../..")
+
+[node name="CreatureItemUser" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("creature_inventory", "spatial_node", "character_body", "head_node", "network_entity")]
+script = ExtResource("39_st2eu")
+creature_inventory = NodePath("../../SharedLogic/PlayerInventory")
+spatial_node = NodePath("../../Player/Head/SpatialItemUse")
+character_body = NodePath("../../Player")
+head_node = NodePath("../../Player/Head/CameraMount")
+network_entity = NodePath("../..")
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="PlayerInventory" type="Node" parent="SharedLogic" node_paths=PackedStringArray("player_hotbar_component", "network_entity")]
+script = ExtResource("40_djfaj")
+player_hotbar_component = NodePath("../../OwnerLogic/PlayerHotbar")
+inventory_size = 9
+network_entity = NodePath("../..")
+
+[node name="DisplayToolItem" type="Node" parent="SharedLogic/PlayerInventory" node_paths=PackedStringArray("tool_item_parent_node")]
+script = ExtResource("38_x7th7")
+tool_item_parent_node = NodePath("../../../Player/Head/CameraMount/ToolItemDisplay")
+
+[node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
+script = ExtResource("25_fmqg4")
+materials = Array[Material]([SubResource("StandardMaterial3D_wuj5g"), SubResource("StandardMaterial3D_rjudh"), SubResource("StandardMaterial3D_4ttwh"), SubResource("StandardMaterial3D_qgny7"), SubResource("StandardMaterial3D_www38"), SubResource("StandardMaterial3D_qr1bo")])
+mesh = NodePath("../../Player/MeshInstance3D/HatMesh")
+network_entity = NodePath("../..")
+
+[node name="PositionSync" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("46_lcexw")
+node_to_sync = NodePath("../../Player")
+network_entity = NodePath("../..")
+
+[node name="OptimizedRotationSyncComponent" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("41_wro33")
+node_to_sync = NodePath("../../Player/Head")
+network_entity = NodePath("../..")
+
+[node name="DebugInteractableZone" type="Node" parent="SharedLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("47_0qn51")
+local_collision_indicator_scene = ExtResource("48_3y88t")
+shared_collision_indicator_scene = ExtResource("49_dboq1")
+network_entity = NodePath("../..")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+collision_layer = 2
+
+[node name="VisualMineTrigger" type="Node3D" parent="Player"]
+script = ExtResource("50_0eynp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+material_override = SubResource("StandardMaterial3D_hj1vt")
+mesh = SubResource("CapsuleMesh_ekfel")
+
+[node name="HatMesh" type="MeshInstance3D" parent="Player/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.976369, 0)
+mesh = SubResource("CylinderMesh_atlbh")
+skeleton = NodePath("../..")
+
+[node name="PlayerCollider" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_ws0uc")
+
+[node name="Head" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="CameraMount" type="Node3D" parent="Player/Head"]
+
+[node name="BodyRaycast" type="RayCast3D" parent="Player/Head/CameraMount"]
+enabled = false
+target_position = Vector3(0, 0, -10)
+collision_mask = 7
+hit_back_faces = false
+
+[node name="ToolItemDisplay" type="Node3D" parent="Player/Head/CameraMount"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39438, -0.538827, -0.48142)
+
+[node name="SpatialItemUse" type="Node3D" parent="Player/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.7, 0)
+
+[node name="PhysicsPropogationArea" type="Area3D" parent="Player"]
+collision_layer = 0
+collision_mask = 6
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/PhysicsPropogationArea"]
+shape = SubResource("CapsuleShape3D_qlogj")
+
+[connection signal="authority_changed" from="." to="SharedLogic/SetMaterialBasedOnOwner" method="_on_entity_authority_change"]
+[connection signal="entity_ready" from="." to="OwnerLogic/PlayerHotbar" method="connect_container_to_hotbar"]
+[connection signal="primary_action" from="OwnerLogic/PlayerInputWIP" to="OwnerLogic/CreatureItemUser" method="use_selected_item"]
+[connection signal="body_entered" from="Player/PhysicsPropogationArea" to="OwnerLogic/PhysicsPropagation" method="start_interaction"]

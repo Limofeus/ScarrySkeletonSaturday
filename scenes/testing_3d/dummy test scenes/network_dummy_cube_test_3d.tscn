@@ -1,0 +1,61 @@
+[gd_scene load_steps=12 format=3 uid="uid://c21rixqn4o18"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_etjbq"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_birod"]
+[ext_resource type="Script" path="res://scripts/debug/testing/owner_authority_on_ready_test.gd" id="3_5xdpt"]
+[ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="4_axhno"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwpfi"]
+albedo_color = Color(0.196071, 0.25379, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pptr8"]
+albedo_color = Color(0.373333, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v810s"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgx2d"]
+albedo_color = Color(1, 0.666667, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mef3i"]
+albedo_color = Color(0.773333, 0.2, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbpn1"]
+albedo_color = Color(0.2, 1, 0.986667, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_efjlv"]
+
+[node name="NetworkDummyCube" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_etjbq")
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="SpawnTransformSetter" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("positional_node")]
+script = ExtResource("2_birod")
+positional_node = NodePath("../../Node3D")
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="TestAuthority" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("3_5xdpt")
+network_entity = NodePath("../..")
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
+script = ExtResource("4_axhno")
+materials = Array[Material]([SubResource("StandardMaterial3D_uwpfi"), SubResource("StandardMaterial3D_pptr8"), SubResource("StandardMaterial3D_v810s"), SubResource("StandardMaterial3D_lgx2d"), SubResource("StandardMaterial3D_mef3i"), SubResource("StandardMaterial3D_pbpn1")])
+mesh = NodePath("../../Node3D/MeshInstance3D")
+network_entity = NodePath("../..")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+mesh = SubResource("BoxMesh_efjlv")
+
+[connection signal="authority_changed" from="." to="OwnerLogic/TestAuthority" method="entity_authority_change"]
+[connection signal="authority_changed" from="." to="SharedLogic/SetMaterialBasedOnOwner" method="_on_entity_authority_change"]
+[connection signal="entity_ready" from="." to="OwnerLogic/TestAuthority" method="entity_ready"]

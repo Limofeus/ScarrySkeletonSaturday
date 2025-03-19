@@ -1,0 +1,142 @@
+[gd_scene load_steps=25 format=3 uid="uid://154rpf0m8pk6"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_j8apf"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_rhwtl"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="3_i8u7m"]
+[ext_resource type="Script" path="res://scripts/components/authority change/owner_change.gd" id="4_ta71p"]
+[ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="5_kdq1a"]
+[ext_resource type="Script" path="res://scripts/debug/testing/owner_authority_on_ready_test.gd" id="6_q28xx"]
+[ext_resource type="Script" path="res://scripts/components/physics/owner_rigidbody.gd" id="7_6gx13"]
+[ext_resource type="Script" path="res://scripts/components/interaction/body_based_interaction_start.gd" id="8_60cqd"]
+[ext_resource type="Script" path="res://scripts/networking/interactions/utility/owner_change_interaction.gd" id="9_c7i8w"]
+[ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="10_464qh"]
+[ext_resource type="Script" path="res://scripts/components/interaction/owner_change_interaction_reciever.gd" id="11_wmbk6"]
+[ext_resource type="Script" path="res://scripts/components/interaction/destruction_interaction_reciever.gd" id="12_j6kck"]
+[ext_resource type="Script" path="res://scripts/components/sync/optimized_position_sync.gd" id="13_buya7"]
+[ext_resource type="Script" path="res://scripts/components/sync/optimized_rotation_sync.gd" id="14_uuwtd"]
+
+[sub_resource type="Resource" id="Resource_6rk2y"]
+script = ExtResource("9_c7i8w")
+auto_set_owner = true
+new_owner = 0
+authority_interaction_priority = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwpfi"]
+albedo_color = Color(0.196071, 0.25379, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pptr8"]
+albedo_color = Color(0.373333, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v810s"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgx2d"]
+albedo_color = Color(1, 0.666667, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mef3i"]
+albedo_color = Color(0.773333, 0.2, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbpn1"]
+albedo_color = Color(0.2, 1, 0.986667, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_efjlv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n2qfw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6l2y2"]
+size = Vector3(1.5, 1.5, 1.5)
+
+[node name="NetworkDummyCube" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_j8apf")
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="SpawnTransformSetter" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("positional_node")]
+script = ExtResource("2_rhwtl")
+positional_node = NodePath("../../RigidBody3D")
+spwan_offset = Vector3(0, 1, 0)
+
+[node name="ProcessEnabler" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("nodes_to_process")]
+script = ExtResource("3_i8u7m")
+nodes_to_process = [NodePath("../../RigidBody3D"), NodePath("../../RigidBody3D/Area3D")]
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="OwnerChanger" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("4_ta71p")
+network_entity = NodePath("../..")
+
+[node name="EntityDestructor" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("5_kdq1a")
+network_entity = NodePath("../..")
+
+[node name="TestAuthority" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("6_q28xx")
+network_entity = NodePath("../..")
+
+[node name="OwnerRigidbody" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("rigidbody", "network_entity")]
+script = ExtResource("7_6gx13")
+rigidbody = NodePath("../../RigidBody3D")
+network_entity = NodePath("../..")
+
+[node name="PhysicsOwnerPropagation" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("8_60cqd")
+interaction = SubResource("Resource_6rk2y")
+network_entity = NodePath("../..")
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
+script = ExtResource("10_464qh")
+materials = Array[Material]([SubResource("StandardMaterial3D_uwpfi"), SubResource("StandardMaterial3D_pptr8"), SubResource("StandardMaterial3D_v810s"), SubResource("StandardMaterial3D_lgx2d"), SubResource("StandardMaterial3D_mef3i"), SubResource("StandardMaterial3D_pbpn1")])
+mesh = NodePath("../../RigidBody3D/MeshInstance3D")
+network_entity = NodePath("../..")
+
+[node name="OwnerChangeRecieve" type="Node" parent="SharedLogic" node_paths=PackedStringArray("owner_change_component", "network_entity")]
+script = ExtResource("11_wmbk6")
+owner_change_component = NodePath("../../OwnerLogic/OwnerChanger")
+network_entity = NodePath("../..")
+
+[node name="EntityDestroyRecieve" type="Node" parent="SharedLogic" node_paths=PackedStringArray("destruction_component", "network_entity")]
+script = ExtResource("12_j6kck")
+destruction_component = NodePath("../../OwnerLogic/EntityDestructor")
+network_entity = NodePath("../..")
+
+[node name="OptimizedPositionSync" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("13_buya7")
+node_to_sync = NodePath("../../RigidBody3D")
+network_entity = NodePath("../..")
+
+[node name="OptimizedRotationSync" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("14_uuwtd")
+node_to_sync = NodePath("../../RigidBody3D")
+network_entity = NodePath("../..")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+collision_layer = 4
+collision_mask = 7
+freeze_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("BoxMesh_efjlv")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("BoxShape3D_n2qfw")
+
+[node name="Area3D" type="Area3D" parent="RigidBody3D"]
+collision_layer = 0
+collision_mask = 6
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/Area3D"]
+shape = SubResource("BoxShape3D_6l2y2")
+
+[connection signal="authority_changed" from="." to="OwnerLogic/TestAuthority" method="entity_authority_change"]
+[connection signal="authority_changed" from="." to="OwnerLogic/OwnerRigidbody" method="on_owner_change"]
+[connection signal="authority_changed" from="." to="SharedLogic/SetMaterialBasedOnOwner" method="_on_entity_authority_change"]
+[connection signal="entity_ready" from="." to="OwnerLogic/TestAuthority" method="entity_ready"]
+[connection signal="body_entered" from="RigidBody3D/Area3D" to="OwnerLogic/PhysicsOwnerPropagation" method="start_interaction"]

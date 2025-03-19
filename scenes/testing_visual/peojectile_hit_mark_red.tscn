@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://saxv52hm6fdc"]
+
+[ext_resource type="Shader" path="res://shaders/test/test_unlit.gdshader" id="1_yn3th"]
+[ext_resource type="Script" path="res://scripts/visual/visual_destroy_timer.gd" id="2_empse"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p3av2"]
+render_priority = 0
+shader = ExtResource("1_yn3th")
+shader_parameter/color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_h88ux"]
+size = Vector3(0.05, 0.05, 0.05)
+
+[node name="PeojectileHitMark" type="Node3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_p3av2")
+mesh = SubResource("BoxMesh_h88ux")
+
+[node name="DestroyTimer" type="Node" parent="." node_paths=PackedStringArray("node_to_destroy")]
+script = ExtResource("2_empse")
+node_to_destroy = NodePath("..")
+destroy_timer = 6.0

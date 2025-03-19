@@ -1,0 +1,129 @@
+[gd_scene load_steps=21 format=3 uid="uid://dtoxf3dgbtr5x"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_2js45"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/complex_entity_parent_setter.gd" id="2_7bhjd"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="3_fkoa3"]
+[ext_resource type="Script" path="res://scripts/debug/simple_debug_button.gd" id="4_3snhu"]
+[ext_resource type="Script" path="res://scripts/components/player/camera_mounter.gd" id="5_m51e3"]
+[ext_resource type="Script" path="res://scripts/components/authority change/owner_change.gd" id="6_qud2g"]
+[ext_resource type="Script" path="res://scripts/components/controllers/simple_character_body_controller.gd" id="7_brhkv"]
+[ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="9_r2k0t"]
+[ext_resource type="Script" path="res://scripts/components/sync/optimized_local_rotation_sync.gd" id="10_uisr2"]
+[ext_resource type="Script" path="res://scripts/components/controllers/node_follow.gd" id="11_liiyk"]
+[ext_resource type="Script" path="res://scripts/components/mounting/mountable.gd" id="12_03lwe"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwpfi"]
+albedo_color = Color(0.196071, 0.25379, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pptr8"]
+albedo_color = Color(0.373333, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v810s"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgx2d"]
+albedo_color = Color(1, 0.666667, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mef3i"]
+albedo_color = Color(0.773333, 0.2, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbpn1"]
+albedo_color = Color(0.2, 1, 0.986667, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jj85k"]
+size = Vector3(1.5, 1, 1.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7556c"]
+size = Vector3(0.3, 0.3, 1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_y2ca6"]
+size = Vector3(1.5, 1, 1.5)
+
+[node name="NetworkMountableTest" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_2js45")
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="SpawnTransformSetter" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("node_follow_component")]
+script = ExtResource("2_7bhjd")
+node_follow_component = NodePath("../../SharedLogic/NodeFollowComponent")
+
+[node name="ProcessEnabler" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("nodes_to_process")]
+script = ExtResource("3_fkoa3")
+nodes_to_process = [NodePath("../../TurretHolder")]
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="DismountButton" type="Node" parent="OwnerLogic"]
+script = ExtResource("4_3snhu")
+window_text = "DebDisWin"
+button_text = "Dismount"
+
+[node name="CameraMounter" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("camera_mount", "network_entity")]
+script = ExtResource("5_m51e3")
+camera_mount = NodePath("../../TurretHolder/PhysBody/CameraMount")
+unsynced_node_path = "/root/Main/CameraRig"
+network_entity = NodePath("../..")
+
+[node name="OwnerChanger" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("6_qud2g")
+network_entity = NodePath("../..")
+
+[node name="SimpleController" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("character_body")]
+script = ExtResource("7_brhkv")
+character_body = NodePath("../../TurretHolder/PhysBody")
+move_speed = 0.0
+rotation_speed = 5.0
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
+script = ExtResource("9_r2k0t")
+materials = Array[Material]([SubResource("StandardMaterial3D_uwpfi"), SubResource("StandardMaterial3D_pptr8"), SubResource("StandardMaterial3D_v810s"), SubResource("StandardMaterial3D_lgx2d"), SubResource("StandardMaterial3D_mef3i"), SubResource("StandardMaterial3D_pbpn1")])
+mesh = NodePath("../../TurretHolder/PhysBody/MeshInstance3D")
+network_entity = NodePath("../..")
+
+[node name="Mountable" type="Node" parent="SharedLogic" node_paths=PackedStringArray("owner_changer", "enable_when_mounted", "dismount_position", "network_entity")]
+script = ExtResource("12_03lwe")
+owner_changer = NodePath("../../OwnerLogic/OwnerChanger")
+enable_when_mounted = [NodePath("../../OwnerLogic/CameraMounter"), NodePath("../../OwnerLogic/DismountButton"), NodePath("../../OwnerLogic/SimpleController")]
+dismount_position = NodePath("../../TurretHolder/PhysBody/DismountPosition")
+network_entity = NodePath("../..")
+
+[node name="NodeFollowComponent" type="Node" parent="SharedLogic" node_paths=PackedStringArray("follower_node", "network_entity")]
+script = ExtResource("11_liiyk")
+follower_node = NodePath("../../TurretHolder")
+network_entity = NodePath("../..")
+
+[node name="OptimizedLocalRotationSyncComponent" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("10_uisr2")
+node_to_sync = NodePath("../../TurretHolder/PhysBody")
+network_entity = NodePath("../..")
+
+[node name="TurretHolder" type="Node3D" parent="."]
+
+[node name="PhysBody" type="CharacterBody3D" parent="TurretHolder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+motion_mode = 1
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TurretHolder/PhysBody"]
+mesh = SubResource("BoxMesh_jj85k")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="TurretHolder/PhysBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.33197)
+mesh = SubResource("BoxMesh_7556c")
+
+[node name="PlayerCollider" type="CollisionShape3D" parent="TurretHolder/PhysBody"]
+shape = SubResource("BoxShape3D_y2ca6")
+
+[node name="CameraMount" type="Node3D" parent="TurretHolder/PhysBody"]
+transform = Transform3D(1, 0, 0, 0, 0.912834, 0.40833, 0, -0.40833, 0.912834, 0, 1.515, 2.913)
+
+[node name="DismountPosition" type="Node3D" parent="TurretHolder/PhysBody"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -1)
+
+[connection signal="authority_changed" from="." to="SharedLogic/SetMaterialBasedOnOwner" method="_on_entity_authority_change"]
+[connection signal="pressed" from="OwnerLogic/DismountButton" to="SharedLogic/Mountable" method="dismount"]

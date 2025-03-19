@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="InventoryItem" load_steps=3 format=3 uid="uid://dd8pji5ufqoba"]
+
+[ext_resource type="Texture2D" uid="uid://bjsygb80gmxou" path="res://sprites/testing/TEST_TEX_2.png" id="1_frgfc"]
+[ext_resource type="Script" path="res://scripts/resources/inventory/items/inventory_item.gd" id="2_vl2lu"]
+
+[resource]
+script = ExtResource("2_vl2lu")
+name = "deb. item 2"
+description = "Some other desc idk"
+stackable = false
+icon = ExtResource("1_frgfc")
