@@ -10,8 +10,12 @@ class_name ProjectileComponent
 @export var only_update_pos_on_owner : bool = true
 
 @export var velocity : Vector3 = Vector3.ZERO #m/s RELATIVE / LOCAL, TODO: add a way to set it from global velocity
+@export var dot_product_threshold : float = -1.0 #Dot product between velocity and (proj->collision point vevctor), 0.0 = 180 degree collision angle, -1.0 = any collision will register
+
 @export var account_for_velocity : bool = true #Accounts for local velocity when calculating collisions
 @export var projectile_lifetime : float = 5.0
+
+@export var projectile_damage : DamageResource = null
 
 var projectile_team : int = 0
 
@@ -50,13 +54,30 @@ func _physics_process(delta: float) -> void:
 	var hit = shape_cast.is_colliding()
 	if(hit):
 		for i in range(shape_cast.get_collision_count()):
+
 			var collided_object : Node3D = shape_cast.get_collider(i)
+			var collision_point : Vector3 = shape_cast.get_collision_point(i)
+
 			if !processed_collisions.has(collided_object):
-				print("NEW collision with: " + collided_object.name)
+				#print("NEW collision with: " + collided_object.name)
 				processed_collisions.append(collided_object) #TODO: Update list in such a way that it allows multiple collisions with one object
-				var interacted_entity = StaticNetworkUtility.get_network_entity_from_node(collided_object)
-				if interacted_entity != null:
-					network_entity.start_interaction(interacted_entity, ProjectileEnteredInteraction.new(collided_object, self, shape_cast.get_collision_point(i)))
+				process_collision_at_point(collided_object, collision_point)
+
 	if((!only_update_pos_on_owner) or network_entity.has_authority()):
 		projectile_node.position += projectile_node.basis * shape_cast_vector
+
+func process_collision_at_point(collided_object : Node3D, collision_point : Vector3) -> void:
+	var interacted_entity = StaticNetworkUtility.get_network_entity_from_node(collided_object)
 	
+	var diff_vector_normalized : Vector3 = (collision_point - projectile_node.global_position).normalized()
+	var global_velocity_normalized : Vector3 = (projectile_node.global_transform.basis * velocity).normalized()
+
+	#DebugDraw3D.draw_arrow(projectile_node.global_position, projectile_node.global_position + diff_vector_normalized, Color.GREEN, 0.01, true, 0.5)
+	#DebugDraw3D.draw_arrow(projectile_node.global_position, projectile_node.global_position + global_velocity_normalized, Color.BLUE, 0.01, true, 0.5)
+	#DebugDraw3D.draw_sphere(projectile_node.global_position, 0.1, Color.ORANGE, 0.5)
+	#DebugDraw3D.draw_sphere(collision_point, 0.1, Color.RED, 0.5)
+	
+	var dot_accept_collision : bool = diff_vector_normalized.dot(global_velocity_normalized) > dot_product_threshold
+	
+	if interacted_entity != null and dot_accept_collision:
+		network_entity.start_interaction(interacted_entity, ProjectileEnteredInteraction.new(collided_object, self, collision_point))

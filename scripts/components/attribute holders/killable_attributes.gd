@@ -1,0 +1,32 @@
+extends SpatialAttributes
+class_name KillableAttributes
+
+@export var health : float = 1.0
+@export var team_id : int = 0
+
+signal on_take_damage(damage_ammount : float)
+signal on_death()
+
+func recieve_interaction(interaction : Interaction, interacted_entity : InteractableNetworkEntity) -> void:
+	if interaction is ProjectileEnteredInteraction:
+		process_projectile(interaction.projectile_component)
+
+func process_projectile(projectile : ProjectileComponent) -> void:
+	if projectile != null and projectile.projectile_team != team_id:
+		process_damage(projectile.projectile_damage)
+
+func process_damage(damage_resource : DamageResource) -> void:
+	if damage_resource == null:
+		return
+	take_damage.rpc(damage_resource.damage_ammount)
+
+@rpc("any_peer", "call_local", "reliable")
+func take_damage(damage_ammount : float) -> void:
+	health -= damage_ammount
+	on_take_damage.emit(damage_ammount)
+
+	#print("Took damage on peer: " + str(multiplayer.get_unique_id()) + " health: " + str(health))
+	DebugDraw3D.draw_sphere(spatial_node.global_position, 0.75, Color.RED, 0.2)
+
+	if health <= 0.0:
+		on_death.emit()

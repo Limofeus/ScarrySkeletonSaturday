@@ -1,19 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://knu7xi3jljm5"]
+[gd_scene load_steps=8 format=3 uid="uid://knu7xi3jljm5"]
 
 [ext_resource type="Script" path="res://scripts/ui/hotbar/hotbar_slot.gd" id="1_ikd3e"]
-[ext_resource type="Texture2D" uid="uid://cgi865lrhfdyk" path="res://sprites/temp/ref1.png" id="2_7f2or"]
+[ext_resource type="Texture2D" uid="uid://djr0qvb7dkyl7" path="res://sprites/ui/slot_border_1.png" id="3_6y6sb"]
 [ext_resource type="FontFile" uid="uid://4p42hhp6h76q" path="res://fonts/vollkorn/Vollkorn-Bold.otf" id="3_vgvcx"]
-[ext_resource type="Shader" path="res://shaders/test/outline_test_6.gdshader" id="4_8k4o5"]
-[ext_resource type="Texture2D" uid="uid://t5j1b3otpf7l" path="res://sprites/temp/TestUiShsder.png" id="4_sdtey"]
 [ext_resource type="Texture2D" uid="uid://bigotb143s2ov" path="res://sprites/ui/slot_bg_1.png" id="4_sgp6t"]
 [ext_resource type="Texture2D" uid="uid://bntgl6sg14j56" path="res://sprites/ui/slot_selector_right.png" id="6_0n56a"]
 [ext_resource type="Texture2D" uid="uid://4hsfhwxdrcbd" path="res://sprites/ui/slot_selector_left.png" id="7_cyxjv"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gfsdw"]
-shader = ExtResource("4_8k4o5")
-shader_parameter/grid_scale = 10.0
-shader_parameter/gradient_affects_noise = 4.0
-shader_parameter/noise_scroll_speed = 2.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ooeog"]
 
@@ -32,21 +24,13 @@ selection_indicator = NodePath("InsideSlot/Selectors")
 item_icon_node = NodePath("InsideSlot/ItemImage")
 amount_label_node = NodePath("BottomRight/ItemCount")
 
-[node name="Reference" type="MarginContainer" parent="."]
-visible = false
-layout_mode = 2
-
-[node name="TextureRect2" type="TextureRect" parent="Reference"]
-layout_mode = 2
-texture = ExtResource("2_7f2or")
-stretch_mode = 2
-
 [node name="BottomRight" type="Control" parent="."]
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 8
 
 [node name="ItemCount" type="Label" parent="BottomRight"]
+visible = false
 z_index = 1
 layout_mode = 1
 anchors_preset = 8
@@ -78,10 +62,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(206, 268)
 layout_mode = 2
 
-[node name="SlotSelectionAnimation" type="Node" parent="InsideSlot"]
-
 [node name="SlotBorder" type="TextureRect" parent="InsideSlot"]
-material = SubResource("ShaderMaterial_gfsdw")
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.0970874
@@ -94,7 +75,7 @@ offset_right = -20.0
 offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_sdtey")
+texture = ExtResource("3_6y6sb")
 metadata/_edit_use_anchors_ = true
 
 [node name="SlotBackground" type="TextureRect" parent="InsideSlot"]

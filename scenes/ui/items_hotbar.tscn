@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://6ypd48k7kbjj"]
+[gd_scene load_steps=6 format=3 uid="uid://6ypd48k7kbjj"]
 
 [ext_resource type="Script" path="res://scripts/ui/hotbar/hotbar.gd" id="1_71y6h"]
 [ext_resource type="PackedScene" uid="uid://knu7xi3jljm5" path="res://scenes/ui/hotbar_item_slot.tscn" id="1_chxdw"]
-[ext_resource type="StyleBox" uid="uid://dg2rcgoynsnl7" path="res://resources/ui/style boxes/hotbar_line_left.tres" id="2_oesvb"]
-[ext_resource type="StyleBox" uid="uid://dj5wdn4abk8q8" path="res://resources/ui/style boxes/hotbar_line_right.tres" id="3_p2ysk"]
+[ext_resource type="Texture2D" uid="uid://blb8dwjc4v0gg" path="res://sprites/testing/test_texture.png" id="5_cbjwr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dmry"]
 bg_color = Color(0, 0, 0, 0.556863)
@@ -34,10 +33,12 @@ anchor_right = 0.5
 grow_horizontal = 2
 scale = Vector2(0.4, 0.4)
 
-[node name="Hotbar" type="Node" parent="." node_paths=PackedStringArray("slot_container", "left_hotbar_underline")]
+[node name="Hotbar" type="Node" parent="." node_paths=PackedStringArray("slot_container", "hotbar_selector", "label_item_name")]
 script = ExtResource("1_71y6h")
 slot_container = NodePath("../Panel/MarginContainer/HBoxContainer")
-left_hotbar_underline = NodePath("../Panel/HBoxContainer/LeftHotbarUnderline")
+hotbar_selector = NodePath("../Panel/SelectorHolder/HotbarSelector")
+label_item_name = NodePath("../Panel/ItemNameHolder/Label")
+default_selector_pos = 0.0
 hotbar_slot_scene = ExtResource("1_chxdw")
 
 [node name="Panel" type="PanelContainer" parent="."]
@@ -72,20 +73,34 @@ layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
-custom_minimum_size = Vector2(2150, 0)
+[node name="SelectorHolder" type="Control" parent="Panel"]
 layout_mode = 2
+
+[node name="HotbarSelector" type="TextureRect" parent="Panel/SelectorHolder"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -55.59
+offset_right = 240.0
+offset_bottom = -25.59
+grow_vertical = 0
+texture = ExtResource("5_cbjwr")
+expand_mode = 1
+
+[node name="ItemNameHolder" type="Control" parent="Panel"]
+layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="LeftHotbarUnderline" type="PanelContainer" parent="Panel/HBoxContainer"]
-custom_minimum_size = Vector2(153.3, 107)
-layout_mode = 2
-size_flags_vertical = 8
-theme_override_styles/panel = ExtResource("2_oesvb")
-
-[node name="RightHotbarUnderline" type="PanelContainer" parent="Panel/HBoxContainer"]
-custom_minimum_size = Vector2(0, 107)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 8
-theme_override_styles/panel = ExtResource("3_p2ysk")
+[node name="Label" type="Label" parent="Panel/ItemNameHolder"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 57.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 41
+text = "ITEM NAME"

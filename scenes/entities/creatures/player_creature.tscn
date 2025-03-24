@@ -1,0 +1,258 @@
+[gd_scene load_steps=38 format=3 uid="uid://bqdtx48rr07yc"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_63m7l"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_etd3o"]
+[ext_resource type="Script" path="res://scripts/components/input/player_input.gd" id="3_7ars2"]
+[ext_resource type="Script" path="res://scripts/components/player/head_rotation.gd" id="4_sontl"]
+[ext_resource type="Script" path="res://scripts/components/input/input interfaces/movement_input_interface.gd" id="5_dqvwe"]
+[ext_resource type="Script" path="res://scripts/components/controllers/state_machine.gd" id="6_nupmt"]
+[ext_resource type="Script" path="res://scripts/states/movement states/creature_movement_state.gd" id="7_7mgjt"]
+[ext_resource type="Script" path="res://scripts/states/movement states/creature_ground_run_state.gd" id="8_wlqpj"]
+[ext_resource type="Script" path="res://scripts/states/movement states/creature_jump_state.gd" id="9_s76jf"]
+[ext_resource type="Script" path="res://scripts/components/player/camera_mounter.gd" id="10_m48n2"]
+[ext_resource type="Script" path="res://scripts/components/inventory/creature_item_user_component.gd" id="11_hrnlk"]
+[ext_resource type="Script" path="res://scripts/components/utility/visible_if_owner.gd" id="12_4i81v"]
+[ext_resource type="Script" path="res://scripts/components/player/movement_effects_parameters_send.gd" id="13_tqlmt"]
+[ext_resource type="Script" path="res://scripts/components/inventory/player_hotbar_component.gd" id="14_3ehfr"]
+[ext_resource type="Script" path="res://scripts/debug/testing/test_inv_item_adder.gd" id="15_xaj14"]
+[ext_resource type="Script" path="res://scripts/resources/inventory/items/inventory_item.gd" id="16_tlce0"]
+[ext_resource type="Resource" uid="uid://hr26l03c7p77" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item.tres" id="17_fvq0r"]
+[ext_resource type="Resource" uid="uid://bpvdms7w0up6v" path="res://resources/inventory items/tools/spawner items/roomba_spawner_item.tres" id="18_x1fg6"]
+[ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/combo_projectile_weapon.tres" id="19_640nl"]
+[ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/single_projectile_weapon.tres" id="20_bfh14"]
+[ext_resource type="Script" path="res://scripts/components/attribute holders/creature_attributes.gd" id="28_og07y"]
+[ext_resource type="Script" path="res://scripts/components/inventory/player_inventory_component.gd" id="29_8gigg"]
+[ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/display_tool_item.gd" id="31_khg5c"]
+[ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="32_g4v40"]
+[ext_resource type="Script" path="res://scripts/components/sync/position_sync.gd" id="33_melic"]
+[ext_resource type="Script" path="res://scripts/components/sync/optimized_rotation_sync.gd" id="34_xex5s"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wuj5g"]
+albedo_color = Color(0.196071, 0.25379, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rjudh"]
+albedo_color = Color(0.373333, 1, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ttwh"]
+albedo_color = Color(1, 0.2, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qgny7"]
+albedo_color = Color(1, 0.666667, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_www38"]
+albedo_color = Color(0.773333, 0.2, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qr1bo"]
+albedo_color = Color(0.2, 1, 0.986667, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hj1vt"]
+albedo_color = Color(0.520433, 1, 0.235412, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ekfel"]
+radius = 0.3
+height = 1.75
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_atlbh"]
+top_radius = 0.05
+bottom_radius = 0.1
+height = 0.25
+cap_bottom = false
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ws0uc"]
+radius = 0.3
+height = 1.75
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qlogj"]
+
+[node name="NetworkPlayerTest" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_63m7l")
+authority_interaction_priority = 1
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="SpawnTransformSetter" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("positional_node")]
+script = ExtResource("2_etd3o")
+positional_node = NodePath("../../Player")
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="--- AI & Input ---" type="Node" parent="OwnerLogic"]
+
+[node name="PlayerInputWIP" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("movement_input_interface", "network_entity")]
+script = ExtResource("3_7ars2")
+movement_input_interface = NodePath("../MovementInputInterface")
+network_entity = NodePath("../..")
+
+[node name="HeadRotation" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("head_node", "look_node", "network_entity")]
+script = ExtResource("4_sontl")
+head_node = NodePath("../../Player/Head")
+look_node = NodePath("../../Player/Head/CameraMount")
+network_entity = NodePath("../..")
+
+[node name="MovementInputInterface" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("5_dqvwe")
+network_entity = NodePath("../..")
+
+[node name="--- Movement & Rotation ---" type="Node" parent="OwnerLogic"]
+
+[node name="MovementStateMachine" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("current_state", "network_entity")]
+script = ExtResource("6_nupmt")
+current_state = NodePath("CreatureMovementState")
+network_entity = NodePath("../..")
+
+[node name="CreatureMovementState" type="Node" parent="OwnerLogic/MovementStateMachine" node_paths=PackedStringArray("creature_attributes", "movement_input_interface", "next_states")]
+script = ExtResource("7_7mgjt")
+creature_attributes = NodePath("../../../SharedLogic/CreatureAttributes")
+movement_input_interface = NodePath("../../MovementInputInterface")
+speed_mult = 0.7
+next_states = [NodePath("../CreatureRunState"), NodePath("../CreatureJumpState")]
+
+[node name="CreatureRunState" type="Node" parent="OwnerLogic/MovementStateMachine" node_paths=PackedStringArray("creature_attributes", "movement_input_interface", "next_states")]
+script = ExtResource("8_wlqpj")
+creature_attributes = NodePath("../../../SharedLogic/CreatureAttributes")
+movement_input_interface = NodePath("../../MovementInputInterface")
+speed_mult = 1.1
+next_states = [NodePath("../CreatureMovementState"), NodePath("../CreatureJumpState")]
+
+[node name="CreatureJumpState" type="Node" parent="OwnerLogic/MovementStateMachine" node_paths=PackedStringArray("creature_attributes", "movement_input_interface", "next_states")]
+script = ExtResource("9_s76jf")
+jump_power = 2.0
+creature_attributes = NodePath("../../../SharedLogic/CreatureAttributes")
+movement_input_interface = NodePath("../../MovementInputInterface")
+max_accel = 1.0
+max_angle_correct = 0.1
+next_states = [NodePath("../CreatureMovementState")]
+
+[node name="CameraMounter" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("camera_mount", "network_entity")]
+script = ExtResource("10_m48n2")
+camera_mount = NodePath("../../Player/Head/CameraMount")
+unsynced_node_path = "/root/Main/CameraRig"
+network_entity = NodePath("../..")
+
+[node name="--- Items & Inventory ---" type="Node" parent="OwnerLogic"]
+
+[node name="CreatureItemUser" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("creature_inventory", "spatial_node", "character_body", "head_node", "network_entity")]
+script = ExtResource("11_hrnlk")
+creature_inventory = NodePath("../../SharedLogic/PlayerInventory")
+spatial_node = NodePath("../../Player/Head/SpatialItemUse")
+character_body = NodePath("../../Player")
+head_node = NodePath("../../Player/Head/CameraMount")
+network_entity = NodePath("../..")
+
+[node name="--- Visuals & Looks ---" type="Node" parent="OwnerLogic"]
+
+[node name="PlayerBodyVisibility" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("node_to_make_visible", "network_entity")]
+script = ExtResource("12_4i81v")
+node_to_make_visible = NodePath("../../Player/MeshInstance3D")
+visible_to_owner = false
+network_entity = NodePath("../..")
+
+[node name="MovementEffectsSend" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("player_body", "network_entity")]
+script = ExtResource("13_tqlmt")
+player_body = NodePath("../../Player")
+unsynced_node_path = "/root/Main/CameraRig/MovementEffects"
+network_entity = NodePath("../..")
+
+[node name="PlayerHotbar" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("creature_inventory", "network_entity")]
+script = ExtResource("14_3ehfr")
+creature_inventory = NodePath("../../SharedLogic/PlayerInventory")
+unsynced_node_path = "/root/Main/UI Layer/UI/Hotbar/Hotbar"
+network_entity = NodePath("../..")
+
+[node name="--- Other --" type="Node" parent="OwnerLogic"]
+
+[node name="--- Debugging & Testing ---" type="Node" parent="OwnerLogic"]
+
+[node name="DebugInvItemAdder" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("player_inventory")]
+script = ExtResource("15_xaj14")
+player_inventory = NodePath("../../SharedLogic/PlayerInventory")
+debug_items = Array[ExtResource("16_tlce0")]([ExtResource("17_fvq0r"), ExtResource("18_x1fg6"), ExtResource("19_640nl"), ExtResource("20_bfh14")])
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="CreatureAttributes" type="Node" parent="SharedLogic" node_paths=PackedStringArray("character_body", "head_node", "look_node", "spatial_node", "network_entity") groups=["Creature"]]
+script = ExtResource("28_og07y")
+creature_name = "Player"
+character_body = NodePath("../../Player")
+head_node = NodePath("../../Player/Head")
+look_node = NodePath("../../Player/Head/CameraMount")
+spatial_node = NodePath("../../Player")
+network_entity = NodePath("../..")
+
+[node name="PlayerInventory" type="Node" parent="SharedLogic" node_paths=PackedStringArray("player_hotbar_component", "network_entity")]
+script = ExtResource("29_8gigg")
+player_hotbar_component = NodePath("../../OwnerLogic/PlayerHotbar")
+inventory_size = 9
+initial_items = Array[ExtResource("16_tlce0")]([ExtResource("17_fvq0r"), ExtResource("18_x1fg6"), ExtResource("19_640nl"), ExtResource("20_bfh14")])
+network_entity = NodePath("../..")
+
+[node name="DisplayToolItem" type="Node" parent="SharedLogic/PlayerInventory" node_paths=PackedStringArray("tool_item_parent_node")]
+script = ExtResource("31_khg5c")
+tool_item_parent_node = NodePath("../../../Player/Head/CameraMount/ToolItemDisplay")
+
+[node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
+script = ExtResource("32_g4v40")
+materials = Array[Material]([SubResource("StandardMaterial3D_wuj5g"), SubResource("StandardMaterial3D_rjudh"), SubResource("StandardMaterial3D_4ttwh"), SubResource("StandardMaterial3D_qgny7"), SubResource("StandardMaterial3D_www38"), SubResource("StandardMaterial3D_qr1bo")])
+mesh = NodePath("../../Player/MeshInstance3D/HatMesh")
+network_entity = NodePath("../..")
+
+[node name="PositionSync" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("33_melic")
+node_to_sync = NodePath("../../Player")
+network_entity = NodePath("../..")
+
+[node name="OptimizedRotationSyncComponent" type="Node" parent="SharedLogic" node_paths=PackedStringArray("node_to_sync", "network_entity")]
+script = ExtResource("34_xex5s")
+node_to_sync = NodePath("../../Player/Head")
+network_entity = NodePath("../..")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+collision_layer = 2
+
+[node name="AudioListener3D" type="AudioListener3D" parent="Player"]
+current = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+material_override = SubResource("StandardMaterial3D_hj1vt")
+mesh = SubResource("CapsuleMesh_ekfel")
+
+[node name="HatMesh" type="MeshInstance3D" parent="Player/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.976369, 0)
+mesh = SubResource("CylinderMesh_atlbh")
+skeleton = NodePath("../..")
+
+[node name="PlayerCollider" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_ws0uc")
+
+[node name="Head" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+
+[node name="CameraMount" type="Node3D" parent="Player/Head"]
+
+[node name="BodyRaycast" type="RayCast3D" parent="Player/Head/CameraMount"]
+enabled = false
+target_position = Vector3(0, 0, -10)
+collision_mask = 7
+hit_back_faces = false
+
+[node name="ToolItemDisplay" type="Node3D" parent="Player/Head/CameraMount"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39438, -0.538827, -0.48142)
+
+[node name="SpatialItemUse" type="Node3D" parent="Player/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+
+[node name="PhysicsPropogationArea" type="Area3D" parent="Player"]
+collision_layer = 0
+collision_mask = 6
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/PhysicsPropogationArea"]
+shape = SubResource("CapsuleShape3D_qlogj")
+
+[connection signal="authority_changed" from="." to="SharedLogic/SetMaterialBasedOnOwner" method="_on_entity_authority_change"]
+[connection signal="entity_ready" from="." to="OwnerLogic/PlayerHotbar" method="connect_container_to_hotbar"]
+[connection signal="entity_ready" from="." to="SharedLogic/PlayerInventory" method="add_initial_items"]
+[connection signal="primary_action" from="OwnerLogic/PlayerInputWIP" to="OwnerLogic/CreatureItemUser" method="use_selected_item"]

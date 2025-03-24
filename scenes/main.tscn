@@ -1,46 +1,183 @@
-[gd_scene load_steps=17 format=3 uid="uid://bvwy2luk6g1je"]
+[gd_scene load_steps=22 format=3 uid="uid://fjib4361ovfd"]
 
-[ext_resource type="Texture2D" uid="uid://npwcvk5vjtu" path="res://sprites/menu/VoynichBG.png" id="1_4qeuo"]
-[ext_resource type="Material" uid="uid://bk5ol55ebtuwr" path="res://materials/scroll_material.tres" id="1_7jw06"]
-[ext_resource type="Texture2D" uid="uid://c2m4p1keindis" path="res://sprites/menu/MagicCircle1-min.png" id="1_otpi2"]
-[ext_resource type="Texture2D" uid="uid://bi505anobcbfq" path="res://sprites/menu/red-skull-mask-circle.png" id="2_6id2d"]
-[ext_resource type="Script" path="res://scripts/ui/rotate_control_node.gd" id="2_jdmkp"]
-[ext_resource type="Texture2D" uid="uid://cdc3ir1avnepb" path="res://sprites/menu/red-skull-mask-skull.png" id="3_8aoh7"]
-[ext_resource type="Script" path="res://scripts/ui/menu_button_hover_effect.gd" id="3_v1gj4"]
-[ext_resource type="Material" uid="uid://bnvnlxtgjouuo" path="res://materials/invert_color_material.tres" id="5_a65x4"]
-[ext_resource type="Script" path="res://scripts/ui/random_control_pos_size.gd" id="5_td8do"]
-[ext_resource type="FontFile" uid="uid://cti2p0a5rv6dr" path="res://fonts/Empyrean.otf" id="7_dhxeh"]
-[ext_resource type="FontFile" uid="uid://carf6kvexo2l0" path="res://fonts/PirataOne-Regular.ttf" id="8_f55yq"]
-[ext_resource type="Script" path="res://scripts/ui/menu_button_hover_panel.gd" id="10_387k7"]
-[ext_resource type="Material" uid="uid://n6bqdq6gr8g1" path="res://materials/dither_material.tres" id="11_rygfb"]
-[ext_resource type="Material" uid="uid://dh7n305okdfh8" path="res://materials/warm_air_material.tres" id="12_x435u"]
+[ext_resource type="Script" path="res://scripts/networking/network_manager.gd" id="1_1ap1m"]
+[ext_resource type="Script" path="res://scripts/utility/fps_counter.gd" id="1_bkmm5"]
+[ext_resource type="Script" path="res://scripts/debug/debug_network_controls.gd" id="1_gmcmt"]
+[ext_resource type="Script" path="res://scripts/debug/debug_mouse_lock.gd" id="1_jcguy"]
+[ext_resource type="PackedScene" uid="uid://bqdtx48rr07yc" path="res://scenes/entities/creatures/player_creature.tscn" id="5_i60h2"]
+[ext_resource type="Script" path="res://scripts/networking/peer_tracker.gd" id="9_asaim"]
+[ext_resource type="Script" path="res://scripts/networking/spawn arguments/spawn_argument.gd" id="9_smuhi"]
+[ext_resource type="Script" path="res://scripts/visual/player_movement_effects.gd" id="10_3ad3a"]
+[ext_resource type="Script" path="res://scripts/networking/spawn arguments/manual_pos_rot_spawn_argument.gd" id="10_aukot"]
+[ext_resource type="Script" path="res://scripts/networking/network_entity_spawner.gd" id="10_f6xxt"]
+[ext_resource type="Texture2D" uid="uid://coeqr5p2toa25" path="res://sprites/testing/TEST_TEX.png" id="11_yjua0"]
+[ext_resource type="Material" uid="uid://dox7ghi1mskpg" path="res://materials/effects/overlays/speedlines_overlay.tres" id="12_oyb24"]
+[ext_resource type="PackedScene" uid="uid://6ypd48k7kbjj" path="res://scenes/ui/items_hotbar.tscn" id="21_iy7cf"]
 
-[sub_resource type="Gradient" id="Gradient_m0jq8"]
-offsets = PackedFloat32Array(0, 0.5)
-colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 0)
+[sub_resource type="Resource" id="Resource_oj2bi"]
+script = ExtResource("10_aukot")
+position = Vector3(20, 10, 20)
+rotation = Vector3(0, 0, 0)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_2duy0"]
-gradient = SubResource("Gradient_m0jq8")
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8lgcm"]
+
+[sub_resource type="Sky" id="Sky_mqa6u"]
+sky_material = SubResource("ProceduralSkyMaterial_8lgcm")
+
+[sub_resource type="Environment" id="Environment_g77om"]
+background_mode = 2
+sky = SubResource("Sky_mqa6u")
+tonemap_mode = 3
+ssao_enabled = true
+ssao_light_affect = 1.0
+ssao_ao_channel_affect = 1.0
+glow_enabled = true
+fog_mode = 1
+fog_density = 1.0
+volumetric_fog_density = 0.01
+volumetric_fog_ambient_inject = 1.0
+adjustment_contrast = 1.5
+adjustment_saturation = 2.0
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_rqodr"]
+auto_exposure_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamas"]
+albedo_texture = ExtResource("11_yjua0")
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_aaqok"]
+size = Vector3(1, 10, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kf0tq"]
+size = Vector3(1, 10, 1)
 
 [node name="Main" type="Node"]
 
-[node name="Ui" type="Control" parent="."]
+[node name="FPSCounter" type="Node" parent="."]
+script = ExtResource("1_bkmm5")
+
+[node name="DebugMouseLocker" type="Node" parent="." node_paths=PackedStringArray("mouse_blocker")]
+script = ExtResource("1_jcguy")
+mouse_blocker = NodePath("../UI Layer/UI/MouseBlock")
+
+[node name="DebugNode" type="Node" parent="." node_paths=PackedStringArray("network_manager")]
+script = ExtResource("1_gmcmt")
+network_manager = NodePath("../NetworkManager")
+
+[node name="NetworkManager" type="Node" parent="." node_paths=PackedStringArray("network_spawner", "peer_tracker", "debugLabel1")]
+script = ExtResource("1_1ap1m")
+network_spawner = NodePath("../NetworkSpawner")
+peer_tracker = NodePath("../PeerTracker")
+initial_player_scene = ExtResource("5_i60h2")
+player_spawn_arguments = Array[ExtResource("9_smuhi")]([SubResource("Resource_oj2bi")])
+debugLabel1 = NodePath("../UI Layer/UI/DebugWindow/VBoxContainer/Label")
+
+[node name="PeerTracker" type="Node" parent="."]
+script = ExtResource("9_asaim")
+
+[node name="NetworkSpawner" type="Node" parent="." node_paths=PackedStringArray("spawn_parent")]
+script = ExtResource("10_f6xxt")
+spawn_parent = NodePath("..")
+add_as_singleton = true
+
+[node name="CameraRig" type="Node3D" parent="."]
+
+[node name="MovementEffects" type="Node" parent="CameraRig" node_paths=PackedStringArray("camera_node", "camera_rig_node")]
+script = ExtResource("10_3ad3a")
+base_fov = 90.0
+camera_node = NodePath("../Camera3D")
+camera_rig_node = NodePath("..")
+speedlines_material = ExtResource("12_oyb24")
+speed_fov_affection = 0.02
+power_to_speedlines_speed = 0.004
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig"]
+fov = 105.0
+far = 8000.0
+
+[node name="SpeedlinesOverlay" type="ColorRect" parent="CameraRig/Camera3D"]
+material = ExtResource("12_oyb24")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
+environment = SubResource("Environment_g77om")
+camera_attributes = SubResource("CameraAttributesPractical_rqodr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="World"]
+transform = Transform3D(300, 0, 0, 0, 300, 0, 0, 0, 300, 2.054, 1000, -4000)
+material_override = SubResource("StandardMaterial3D_lamas")
+mesh = SubResource("BoxMesh_aaqok")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.974, 5, 17.674)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D2"]
+shape = SubResource("BoxShape3D_kf0tq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D2"]
+material_override = SubResource("StandardMaterial3D_lamas")
+mesh = SubResource("BoxMesh_aaqok")
+skeleton = NodePath("../..")
+
+[node name="ChunkHolder" type="Node3D" parent="World"]
+
+[node name="Label3D" type="Label3D" parent="World"]
+transform = Transform3D(5.82983, 0, 0, 0, 5.82983, 0, 0, 0, 5.82983, 1.01979, 1.94386, -21.2873)
+modulate = Color(0, 0.214811, 1, 1)
+text = "-Z"
+
+[node name="Label3D2" type="Label3D" parent="World"]
+transform = Transform3D(0.490971, 0, 5.80912, 0, 5.82983, 0, -5.80912, 0, 0.490971, -19.3721, 1.94386, -1.20105)
+modulate = Color(1, 0, 0.423702, 1)
+text = "-X"
+
+[node name="Label3D3" type="Label3D" parent="World"]
+transform = Transform3D(-5.79355, 0, -0.649441, 0, 5.82983, 0, 0.649441, 0, -5.79355, 2.89003, 1.94386, 23.093)
+modulate = Color(0, 0.00750613, 1, 1)
+text = "Z"
+
+[node name="Label3D4" type="Label3D" parent="World"]
+transform = Transform3D(2.91324, 0, -5.04975, 0, 5.82983, 0, 5.04975, 0, 2.91324, 14.6177, 1.94386, -0.98241)
+modulate = Color(1, 0, 0.0517225, 1)
+text = "X"
+
+[node name="Label3D5" type="Label3D" parent="World"]
+transform = Transform3D(5.73976, 0, -1.02086, 0, 5.82983, 0, 1.02086, 0, 5.73976, 19.058, 1.37404, 11.666)
+modulate = Color(1, 0, 0.0517225, 1)
+text = "CHUNK 0, 0"
+
+[node name="CSGBox3D" type="CSGBox3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2075, -4.19916, -3.51813)
+use_collision = true
+size = Vector3(114.753, 8.58411, 100.814)
+
+[node name="UI Layer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UI Layer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
-[node name="Menu" type="Control" parent="Ui"]
+[node name="Hotbar" parent="UI Layer/UI" instance=ExtResource("21_iy7cf")]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Ui/Menu"]
+[node name="MouseBlock" type="Control" parent="UI Layer/UI"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -48,316 +185,32 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(1, 0, 0, 1)
 
-[node name="BgTexture" type="TextureRect" parent="Ui/Menu"]
-texture_filter = 4
-texture_repeat = 2
-material = ExtResource("1_7jw06")
+[node name="DebugWindow" type="PanelContainer" parent="UI Layer/UI"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("1_4qeuo")
-expand_mode = 5
-
-[node name="ColorRect2" type="ColorRect" parent="Ui/Menu"]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -20.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0, 0, 0, 1)
-
-[node name="ColorRect4" type="ColorRect" parent="Ui/Menu"]
-custom_minimum_size = Vector2(0, 2)
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -18.0
-offset_bottom = -16.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(1, 0, 0, 1)
-
-[node name="ColorRect3" type="ColorRect" parent="Ui/Menu"]
-custom_minimum_size = Vector2(0, 20)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_bottom = 20.0
-grow_horizontal = 2
-color = Color(0, 0, 0, 1)
-
-[node name="ColorRect5" type="ColorRect" parent="Ui/Menu"]
-custom_minimum_size = Vector2(0, 2)
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 16.0
-offset_bottom = 18.0
-grow_horizontal = 2
-color = Color(1, 0, 0, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="Ui/Menu"]
-layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_right = 493.0
-grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_bottom = 50
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Ui/Menu/MarginContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Ui/Menu/MarginContainer/VBoxContainer"]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 2
-theme_override_constants/line_spacing = -40
-theme_override_fonts/font = ExtResource("7_dhxeh")
-theme_override_font_sizes/font_size = 131
-text = "Skeleton
- Saturday"
-
-[node name="Control" type="Control" parent="Ui/Menu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Ui/Menu/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 4
-mouse_filter = 0
-theme_override_constants/separation = -2
-
-[node name="Button" type="Button" parent="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer" node_paths=PackedStringArray("menu_hover_rect")]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-theme_override_fonts/font = ExtResource("8_f55yq")
-theme_override_font_sizes/font_size = 40
-text = "Play Solo"
-flat = true
-alignment = 0
-script = ExtResource("3_v1gj4")
-menu_hover_rect = NodePath("../../../../ButtonSelector")
-
-[node name="Button2" type="Button" parent="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer" node_paths=PackedStringArray("menu_hover_rect")]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-theme_override_fonts/font = ExtResource("8_f55yq")
-theme_override_font_sizes/font_size = 40
-text = "Play Online"
-flat = true
-alignment = 0
-script = ExtResource("3_v1gj4")
-menu_hover_rect = NodePath("../../../../ButtonSelector")
-
-[node name="Button3" type="Button" parent="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer" node_paths=PackedStringArray("menu_hover_rect")]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-theme_override_fonts/font = ExtResource("8_f55yq")
-theme_override_font_sizes/font_size = 40
-text = "Options"
-flat = true
-alignment = 0
-script = ExtResource("3_v1gj4")
-menu_hover_rect = NodePath("../../../../ButtonSelector")
-
-[node name="Button4" type="Button" parent="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer" node_paths=PackedStringArray("menu_hover_rect")]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 2
-focus_mode = 0
-mouse_filter = 1
-theme_override_fonts/font = ExtResource("8_f55yq")
-theme_override_font_sizes/font_size = 40
-text = "Exit"
-flat = true
-alignment = 0
-script = ExtResource("3_v1gj4")
-menu_hover_rect = NodePath("../../../../ButtonSelector")
-
-[node name="SkullLogo" type="Control" parent="Ui/Menu"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
+anchors_preset = 4
 anchor_top = 0.5
-anchor_right = 1.0
 anchor_bottom = 0.5
-offset_left = -1296.0
-offset_top = -1078.0
-offset_right = 752.0
-offset_bottom = 970.0
-grow_horizontal = 0
+offset_top = -46.5
+offset_right = 150.0
+offset_bottom = 46.5
 grow_vertical = 2
-scale = Vector2(0.215, 0.215)
-pivot_offset = Vector2(1024, 1024)
 
-[node name="MagicCircle" type="TextureRect" parent="Ui/Menu/SkullLogo"]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-pivot_offset = Vector2(1024, 1024)
-texture = ExtResource("1_otpi2")
-script = ExtResource("2_jdmkp")
-rotation_speed = 0.05
+[node name="VBoxContainer" type="VBoxContainer" parent="UI Layer/UI/DebugWindow"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
 
-[node name="CircleCover" type="TextureRect" parent="Ui/Menu/SkullLogo"]
-self_modulate = Color(1, 0, 0, 1)
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("2_6id2d")
+[node name="Label" type="Label" parent="UI Layer/UI/DebugWindow/VBoxContainer"]
+layout_mode = 2
+text = "TEST: 4"
 
-[node name="Skull" type="TextureRect" parent="Ui/Menu/SkullLogo"]
-self_modulate = Color(0, 0, 0, 1)
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("3_8aoh7")
+[node name="IpField" type="LineEdit" parent="UI Layer/UI/DebugWindow/VBoxContainer"]
+layout_mode = 2
+text = "127.0.0.1"
 
-[node name="InvertCover" type="ColorRect" parent="Ui/Menu/SkullLogo"]
-self_modulate = Color(1, 0, 0, 1)
-material = ExtResource("5_a65x4")
-layout_mode = 0
-script = ExtResource("5_td8do")
-max_pos = Vector2(2048, 2500)
-min_size = Vector2(150, 150)
-max_size = Vector2(800, 800)
+[node name="PortField" type="LineEdit" parent="UI Layer/UI/DebugWindow/VBoxContainer"]
+layout_mode = 2
+text = "1337"
 
-[node name="Timer" type="Timer" parent="Ui/Menu/SkullLogo/InvertCover"]
-wait_time = 0.2
-autostart = true
-
-[node name="InvertCover2" type="ColorRect" parent="Ui/Menu/SkullLogo"]
-self_modulate = Color(1, 0, 0, 1)
-material = ExtResource("5_a65x4")
-layout_mode = 0
-script = ExtResource("5_td8do")
-max_pos = Vector2(2048, 2500)
-min_size = Vector2(150, 150)
-max_size = Vector2(400, 400)
-
-[node name="Timer" type="Timer" parent="Ui/Menu/SkullLogo/InvertCover2"]
-wait_time = 0.1
-autostart = true
-
-[node name="InvertCover3" type="ColorRect" parent="Ui/Menu/SkullLogo"]
-self_modulate = Color(1, 0, 0, 1)
-material = ExtResource("5_a65x4")
-layout_mode = 0
-script = ExtResource("5_td8do")
-max_pos = Vector2(2048, 2500)
-min_size = Vector2(150, 150)
-max_size = Vector2(400, 400)
-
-[node name="Timer" type="Timer" parent="Ui/Menu/SkullLogo/InvertCover3"]
-wait_time = 0.1
-autostart = true
-
-[node name="InvertCover4" type="ColorRect" parent="Ui/Menu/SkullLogo"]
-self_modulate = Color(1, 0, 0, 1)
-material = ExtResource("5_a65x4")
-layout_mode = 0
-script = ExtResource("5_td8do")
-max_pos = Vector2(2048, 2500)
-min_size = Vector2(75, 75)
-max_size = Vector2(300, 300)
-
-[node name="Timer" type="Timer" parent="Ui/Menu/SkullLogo/InvertCover4"]
-wait_time = 0.3
-autostart = true
-
-[node name="ButtonSelector" type="ColorRect" parent="Ui/Menu"]
-clip_children = 1
-material = ExtResource("5_a65x4")
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -324.0
-offset_bottom = -324.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 0, 1)
-script = ExtResource("10_387k7")
-
-[node name="ButtonSelector2" type="TextureRect" parent="Ui/Menu/ButtonSelector"]
-clip_children = 1
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -28.5
-offset_bottom = -26.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture1D_2duy0")
-
-[node name="ButtonSelector3" type="TextureRect" parent="Ui/Menu/ButtonSelector"]
-clip_children = 1
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = 26.5
-offset_bottom = 28.5
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = SubResource("GradientTexture1D_2duy0")
-
-[node name="BackBufferCopy" type="BackBufferCopy" parent="Ui"]
-copy_mode = 2
-
-[node name="DitheEffect" type="ColorRect" parent="Ui"]
-visible = false
-material = ExtResource("11_rygfb")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="WarmAirEffect" type="ColorRect" parent="Ui"]
-material = ExtResource("12_x435u")
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[connection signal="mouse_exited" from="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer" to="Ui/Menu/ButtonSelector" method="deselect"]
-[connection signal="mouse_entered" from="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button" to="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button" method="trigger_hover"]
-[connection signal="mouse_entered" from="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button2" to="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button2" method="trigger_hover"]
-[connection signal="mouse_entered" from="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button3" to="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button3" method="trigger_hover"]
-[connection signal="mouse_entered" from="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button4" to="Ui/Menu/MarginContainer/VBoxContainer/VBoxContainer/Button4" method="trigger_hover"]
-[connection signal="timeout" from="Ui/Menu/SkullLogo/InvertCover/Timer" to="Ui/Menu/SkullLogo/InvertCover" method="randomize"]
-[connection signal="timeout" from="Ui/Menu/SkullLogo/InvertCover2/Timer" to="Ui/Menu/SkullLogo/InvertCover2" method="randomize"]
-[connection signal="timeout" from="Ui/Menu/SkullLogo/InvertCover3/Timer" to="Ui/Menu/SkullLogo/InvertCover3" method="randomize"]
-[connection signal="timeout" from="Ui/Menu/SkullLogo/InvertCover4/Timer" to="Ui/Menu/SkullLogo/InvertCover4" method="randomize"]
+[connection signal="text_changed" from="UI Layer/UI/DebugWindow/VBoxContainer/IpField" to="DebugNode" method="set_connection_address_string"]
+[connection signal="text_changed" from="UI Layer/UI/DebugWindow/VBoxContainer/PortField" to="DebugNode" method="set_connection_port_string"]

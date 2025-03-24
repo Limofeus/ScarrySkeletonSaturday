@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=3 uid="uid://b6y6h0oq718ib"]
+
+[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_ejyqj"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="2_iyv5s"]
+[ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="3_icvcs"]
+[ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="4_kt6s3"]
+[ext_resource type="Script" path="res://scripts/components/basic/projectile_component.gd" id="5_od5ne"]
+[ext_resource type="Script" path="res://scripts/resources/damage/damage_resource.gd" id="6_4epxq"]
+
+[sub_resource type="Resource" id="Resource_26f71"]
+script = ExtResource("6_4epxq")
+damage_ammount = 2.0
+damage_type = 0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4mhpw"]
+transparency = 1
+albedo_color = Color(1, 0.572343, 0.0766366, 0.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_xycxm"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hl2q8"]
+height = 0.7
+radius = 2.0
+
+[node name="NetworkProjectileTest" type="Node" node_paths=PackedStringArray("spawn_logic", "ownerLogic", "sharedLogic")]
+script = ExtResource("1_ejyqj")
+spawn_logic = NodePath("SpawnLogic")
+ownerLogic = NodePath("OwnerLogic")
+sharedLogic = NodePath("SharedLogic")
+
+[node name="SpawnLogic" type="Node" parent="."]
+
+[node name="ProjectileSpawnComponent" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("projectile_component", "positional_node")]
+script = ExtResource("2_iyv5s")
+projectile_component = NodePath("../../SharedLogic/Projectile")
+positional_node = NodePath("../../Projectile")
+
+[node name="ProcessEnabler" type="Node" parent="SpawnLogic" node_paths=PackedStringArray("nodes_to_process")]
+script = ExtResource("3_icvcs")
+nodes_to_process = [NodePath("../../SharedLogic/Projectile")]
+
+[node name="OwnerLogic" type="Node" parent="."]
+
+[node name="DestructionComponent" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("network_entity")]
+script = ExtResource("4_kt6s3")
+network_entity = NodePath("../..")
+
+[node name="SharedLogic" type="Node" parent="."]
+
+[node name="Projectile" type="Node" parent="SharedLogic" node_paths=PackedStringArray("projectile_node", "shape_cast", "entity_destruction_component", "network_entity")]
+script = ExtResource("5_od5ne")
+projectile_node = NodePath("../../Projectile")
+shape_cast = NodePath("../../Projectile/ShapeCast3D")
+entity_destruction_component = NodePath("../../OwnerLogic/DestructionComponent")
+only_update_pos_on_owner = false
+velocity = Vector3(0, 0, -4)
+dot_product_threshold = 0.0
+projectile_lifetime = 0.3
+projectile_damage = SubResource("Resource_26f71")
+network_entity = NodePath("../..")
+
+[node name="Projectile" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Projectile"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_4mhpw")
+mesh = SubResource("CylinderMesh_xycxm")
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="Projectile"]
+shape = SubResource("CylinderShape3D_hl2q8")
+target_position = Vector3(0, 0, -3)
+collision_mask = 23
+debug_shape_custom_color = Color(1, 0, 0, 1)
+
+[connection signal="entity_ready" from="." to="SharedLogic/Projectile" method="start_destroy_timer"]

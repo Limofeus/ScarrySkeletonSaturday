@@ -5,6 +5,7 @@ enum SPAWN_FROM_POSITION {ITEM_USE_NODE , HEAD_NODE , HAND_NODE }
 
 @export var scene_to_instantiate : PackedScene
 @export var spawn_from_position : SPAWN_FROM_POSITION = SPAWN_FROM_POSITION.ITEM_USE_NODE
+@export var copy_rotation : bool = true
 @export var position_offset : float = 0.3
 
 func _use_tool(item_user : SpatialItemUser) -> void:
@@ -22,4 +23,4 @@ func pick_spawn_node(item_user : SpatialItemUser) -> Node3D:
 	return item_use_node
 
 func spawn_network_entity(_item_user : SpatialItemUser, item_use_node : Node3D) -> void:
-	StaticNetworkUtility.spatial_spawn_network_entity(scene_to_instantiate, item_use_node.global_position + (-item_use_node.global_basis.z * position_offset), item_use_node.global_rotation)
+	StaticNetworkUtility.spatial_spawn_network_entity(scene_to_instantiate, item_use_node.global_position + (-item_use_node.global_basis.z * position_offset), item_use_node.global_rotation if copy_rotation else Vector3.ZERO)
