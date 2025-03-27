@@ -242,7 +242,7 @@ hit_back_faces = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39438, -0.538827, -0.48142)
 
 [node name="SpatialItemUse" type="Node3D" parent="Player/Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
 
 [node name="PhysicsPropogationArea" type="Area3D" parent="Player"]
 collision_layer = 0

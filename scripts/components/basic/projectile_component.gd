@@ -10,9 +10,9 @@ class_name ProjectileComponent
 @export var only_update_pos_on_owner : bool = true
 
 @export var velocity : Vector3 = Vector3.ZERO #m/s RELATIVE / LOCAL, TODO: add a way to set it from global velocity
-@export var dot_product_threshold : float = -1.0 #Dot product between velocity and (proj->collision point vevctor), 0.0 = 180 degree collision angle, -1.0 = any collision will register
+@export var vel_dot_product_threshold : float = -1.0 #Dot product between velocity and (proj->collision point vevctor), 0.0 = 180 degree collision angle, -1.0 = any collision will register
+@export var dir_dot_product_threshold : float = -1.0 #Same as above, but for projectile forward vector instead of velocity
 
-@export var account_for_velocity : bool = true #Accounts for local velocity when calculating collisions
 @export var projectile_lifetime : float = 5.0
 
 @export var projectile_damage : DamageResource = null
@@ -77,7 +77,8 @@ func process_collision_at_point(collided_object : Node3D, collision_point : Vect
 	#DebugDraw3D.draw_sphere(projectile_node.global_position, 0.1, Color.ORANGE, 0.5)
 	#DebugDraw3D.draw_sphere(collision_point, 0.1, Color.RED, 0.5)
 	
-	var dot_accept_collision : bool = diff_vector_normalized.dot(global_velocity_normalized) > dot_product_threshold
+	var vel_dot_accept_collision : bool = diff_vector_normalized.dot(global_velocity_normalized) > vel_dot_product_threshold
+	var dir_dot_accept_collision : bool = diff_vector_normalized.dot(-projectile_node.global_basis.z) > dir_dot_product_threshold
 	
-	if interacted_entity != null and dot_accept_collision:
+	if interacted_entity != null and vel_dot_accept_collision and dir_dot_accept_collision:
 		network_entity.start_interaction(interacted_entity, ProjectileEnteredInteraction.new(collided_object, self, collision_point))

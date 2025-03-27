@@ -1,39 +1,57 @@
-[gd_scene load_steps=17 format=3 uid="uid://brq0omedrixx7"]
+[gd_scene load_steps=19 format=3 uid="uid://brq0omedrixx7"]
 
 [ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_pr2bi"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="2_4c8u4"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="3_pyhik"]
 [ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="4_uqev0"]
-[ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="5_lybt4"]
 [ext_resource type="Script" path="res://scripts/components/basic/projectile_component.gd" id="6_3xsqs"]
 [ext_resource type="Script" path="res://scripts/resources/damage/damage_resource.gd" id="7_inq12"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_uwpfi"]
-albedo_color = Color(0.196071, 0.25379, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pptr8"]
-albedo_color = Color(0.373333, 1, 0.2, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v810s"]
-albedo_color = Color(1, 0.2, 0.2, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lgx2d"]
-albedo_color = Color(1, 0.666667, 0.2, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mef3i"]
-albedo_color = Color(0.773333, 0.2, 1, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pbpn1"]
-albedo_color = Color(0.2, 1, 0.986667, 1)
+[ext_resource type="Shader" path="res://shaders/mesh effects/opaque_projectile.gdshader" id="8_2pmsx"]
+[ext_resource type="Shader" path="res://shaders/mesh effects/opaque_projectile_cull_disabled.gdshader" id="8_cnkyy"]
+[ext_resource type="Script" path="res://scripts/visual/projectile effects/spin_projectile_effect.gd" id="8_unmdd"]
+[ext_resource type="Script" path="res://scripts/visual/projectile effects/material_projectile_lifetime.gd" id="9_2ltma"]
 
 [sub_resource type="Resource" id="Resource_oryys"]
 script = ExtResource("7_inq12")
 damage_ammount = 1.0
 damage_type = 0
 
-[sub_resource type="SphereMesh" id="SphereMesh_nlcoi"]
+[sub_resource type="Curve" id="Curve_vhb48"]
+_data = [Vector2(0, 0), 0.0, 50.0, 0, 1, Vector2(0.02, 1), 0.0, 0.0, 0, 0, Vector2(0.98, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -50.0, 0.0, 1, 0]
+point_count = 4
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5yrbv"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("8_2pmsx")
+shader_parameter/main_color = Color(0, 0, 0, 1)
+shader_parameter/projectile_lifetime = 0.0
+
+[sub_resource type="Curve" id="Curve_85kwv"]
+_data = [Vector2(0, 0), 0.0, 10.0, 0, 1, Vector2(0.1, 1), 0.0, 0.0, 0, 0, Vector2(0.98, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -50.0, 0.0, 1, 0]
+point_count = 4
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x34qk"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("8_cnkyy")
+shader_parameter/main_color = Color(3, 0, 0, 1)
+shader_parameter/projectile_lifetime = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_npafl"]
 radius = 0.125
 height = 0.25
+radial_segments = 5
+rings = 2
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ektdg"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.05
+radial_segments = 8
+rings = 0
+cap_top = false
+cap_bottom = false
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cu23y"]
 radius = 0.125
@@ -63,26 +81,49 @@ network_entity = NodePath("../..")
 
 [node name="SharedLogic" type="Node" parent="."]
 
-[node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
-script = ExtResource("5_lybt4")
-materials = Array[Material]([SubResource("StandardMaterial3D_uwpfi"), SubResource("StandardMaterial3D_pptr8"), SubResource("StandardMaterial3D_v810s"), SubResource("StandardMaterial3D_lgx2d"), SubResource("StandardMaterial3D_mef3i"), SubResource("StandardMaterial3D_pbpn1")])
-mesh = NodePath("../../Projectile/MeshInstance3D")
-network_entity = NodePath("../..")
-
 [node name="Projectile" type="Node" parent="SharedLogic" node_paths=PackedStringArray("projectile_node", "shape_cast", "entity_destruction_component", "network_entity")]
 script = ExtResource("6_3xsqs")
 projectile_node = NodePath("../../Projectile")
 shape_cast = NodePath("../../Projectile/ShapeCast3D")
 entity_destruction_component = NodePath("../../OwnerLogic/DestructionComponent")
 only_update_pos_on_owner = false
-velocity = Vector3(0, 0, -20)
+velocity = Vector3(0, 0, -40)
 projectile_damage = SubResource("Resource_oryys")
 network_entity = NodePath("../..")
+
+[node name="ProjSpin" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("visual_to_spin")]
+script = ExtResource("8_unmdd")
+visual_to_spin = NodePath("../../../Projectile/MeshInstance3D")
+spin_speed = 5.0
+
+[node name="ProjSpin2" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("visual_to_spin")]
+script = ExtResource("8_unmdd")
+visual_to_spin = NodePath("../../../Projectile/MeshInstance3D/MeshInstance3D2")
+spin_axis = Vector3(0, 0, 1)
+spin_speed = 3.0
+
+[node name="MaterialProjectileLifetime" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("projectile")]
+script = ExtResource("9_2ltma")
+projectile = NodePath("..")
+curve_mapping = SubResource("Curve_vhb48")
+shader_material = SubResource("ShaderMaterial_5yrbv")
+
+[node name="MaterialProjectileLifetime2" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("projectile")]
+script = ExtResource("9_2ltma")
+projectile = NodePath("..")
+curve_mapping = SubResource("Curve_85kwv")
+shader_material = SubResource("ShaderMaterial_x34qk")
 
 [node name="Projectile" type="Node3D" parent="."]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Projectile"]
-mesh = SubResource("SphereMesh_nlcoi")
+material_override = SubResource("ShaderMaterial_5yrbv")
+mesh = SubResource("SphereMesh_npafl")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Projectile/MeshInstance3D"]
+material_override = SubResource("ShaderMaterial_x34qk")
+mesh = SubResource("CylinderMesh_ektdg")
+skeleton = NodePath("../..")
 
 [node name="ShapeCast3D" type="ShapeCast3D" parent="Projectile"]
 shape = SubResource("SphereShape3D_cu23y")
@@ -90,5 +131,4 @@ target_position = Vector3(0, 0, -3)
 collision_mask = 23
 debug_shape_custom_color = Color(1, 0, 0, 1)
 
-[connection signal="authority_changed" from="." to="SharedLogic/SetMaterialBasedOnOwner" method="_on_entity_authority_change"]
 [connection signal="entity_ready" from="." to="SharedLogic/Projectile" method="start_destroy_timer"]

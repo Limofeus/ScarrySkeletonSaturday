@@ -1,9 +1,11 @@
-[gd_resource type="Resource" script_class="WeaponItem" load_steps=16 format=3 uid="uid://b7tqoytns3x4d"]
+[gd_resource type="Resource" script_class="WeaponItem" load_steps=18 format=3 uid="uid://b7tqoytns3x4d"]
 
-[ext_resource type="PackedScene" uid="uid://b6y6h0oq718ib" path="res://scenes/entities/projectiles/slash_projectile.tscn" id="1_4gaf2"]
 [ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_5m3vv"]
+[ext_resource type="PackedScene" uid="uid://bisupap8w4luj" path="res://scenes/entities/projectiles/slash_projectile_right.tscn" id="1_t8tpn"]
+[ext_resource type="PackedScene" uid="uid://bp4nm6o3360qd" path="res://scenes/entities/projectiles/slash_projectile_left.tscn" id="2_mxaq2"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="2_n86ed"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="3_5qywc"]
+[ext_resource type="PackedScene" uid="uid://byk8uupvnaqsv" path="res://scenes/entities/projectiles/slash_projectile_spin.tscn" id="3_xa5dn"]
 [ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="4_7aorn"]
 [ext_resource type="Script" path="res://scripts/components/basic/projectile_component.gd" id="5_flnjg"]
 [ext_resource type="Script" path="res://scripts/resources/damage/damage_resource.gd" id="6_ca57q"]
@@ -11,21 +13,21 @@
 [ext_resource type="Script" path="res://scripts/resources/inventory/items/weapon_item.gd" id="8_xg38k"]
 [ext_resource type="PackedScene" uid="uid://btcr3jt8wthqt" path="res://scenes/items/tools/test_tool_display_1.tscn" id="9_yxmtr"]
 
-[sub_resource type="Resource" id="Resource_26f71"]
+[sub_resource type="Resource" id="Resource_p4hvq"]
 script = ExtResource("6_ca57q")
 damage_ammount = 2.0
 damage_type = 0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4mhpw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4uyv2"]
 transparency = 1
 albedo_color = Color(1, 0.572343, 0.0766366, 0.2)
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_xycxm"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_h31kf"]
 top_radius = 1.0
 bottom_radius = 1.0
 height = 0.1
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_hl2q8"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_umi36"]
 height = 0.7
 radius = 2.0
 
@@ -38,15 +40,15 @@ _bundled = {
 "node_count": 11,
 "node_paths": [NodePath("."), NodePath("./SpawnLogic"), NodePath("./SpawnLogic"), NodePath("."), NodePath("./OwnerLogic"), NodePath("."), NodePath("./SharedLogic"), NodePath("."), NodePath("./Projectile"), NodePath("./Projectile"), NodePath("SharedLogic/Projectile"), NodePath(".")],
 "nodes": PackedInt32Array(-1, -1, 1, 0, -1, 4, 2, 0, 1073741827, 1, 1073741828, 2, 1073741829, 3, 0, 1073741824, 0, 7, 6, -1, 0, 0, 1073741825, 0, 9, 8, -1, 3, 10, 4, 1073741835, 5, 1073741836, 6, 0, 1073741826, 0, 14, 13, -1, 2, 15, 7, 1073741840, 8, 0, 1073741827, 0, 18, 17, -1, 0, 0, 1073741828, 0, 20, 19, -1, 2, 21, 9, 1073741846, 10, 0, 1073741829, 0, 24, 23, -1, 0, 0, 1073741830, 0, 26, 25, -1, 10, 27, 11, 1073741852, 12, 1073741853, 13, 1073741854, 14, 31, 15, 32, 16, 33, 17, 34, 18, 35, 19, 1073741860, 20, 0, 1073741831, 0, 38, 37, -1, 0, 0, 1073741832, 0, 40, 39, -1, 3, 41, 21, 42, 22, 43, 23, 0, 1073741833, 0, 45, 44, -1, 4, 46, 24, 47, 25, 48, 26, 49, 27, 0),
-"variants": [ExtResource("1_5m3vv"), NodePath("SpawnLogic"), NodePath("OwnerLogic"), NodePath("SharedLogic"), ExtResource("2_n86ed"), NodePath("../../SharedLogic/Projectile"), NodePath("../../Projectile"), ExtResource("3_5qywc"), [NodePath("../../SharedLogic/Projectile")], ExtResource("4_7aorn"), NodePath("../.."), ExtResource("5_flnjg"), NodePath("../../Projectile"), NodePath("../../Projectile/ShapeCast3D"), NodePath("../../OwnerLogic/DestructionComponent"), false, Vector3(0, 0, -4), 0.0, 0.3, SubResource("Resource_26f71"), NodePath("../.."), Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0), SubResource("StandardMaterial3D_4mhpw"), SubResource("CylinderMesh_xycxm"), SubResource("CylinderShape3D_hl2q8"), Vector3(0, 0, -3), 23, Color(1, 0, 0, 1)],
+"variants": [ExtResource("1_5m3vv"), NodePath("SpawnLogic"), NodePath("OwnerLogic"), NodePath("SharedLogic"), ExtResource("2_n86ed"), NodePath("../../SharedLogic/Projectile"), NodePath("../../Projectile"), ExtResource("3_5qywc"), [NodePath("../../SharedLogic/Projectile")], ExtResource("4_7aorn"), NodePath("../.."), ExtResource("5_flnjg"), NodePath("../../Projectile"), NodePath("../../Projectile/ShapeCast3D"), NodePath("../../OwnerLogic/DestructionComponent"), false, Vector3(0, 0, -4), 0.0, 0.3, SubResource("Resource_p4hvq"), NodePath("../.."), Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0), SubResource("StandardMaterial3D_4uyv2"), SubResource("CylinderMesh_h31kf"), SubResource("CylinderShape3D_umi36"), Vector3(0, 0, -3), 23, Color(1, 0, 0, 1)],
 "version": 3
 }
 
 [resource]
 script = ExtResource("8_xg38k")
-item_cooldown = 0.5
+item_cooldown = 0.1
 useable_on_cooldown = false
-combo_scenes = Array[PackedScene]([ExtResource("1_4gaf2"), ExtResource("1_4gaf2")])
+combo_scenes = Array[PackedScene]([ExtResource("1_t8tpn"), ExtResource("2_mxaq2"), ExtResource("3_xa5dn")])
 scene_to_instantiate = SubResource("PackedScene_sjxy2")
 spawn_from_position = 0
 copy_rotation = true
