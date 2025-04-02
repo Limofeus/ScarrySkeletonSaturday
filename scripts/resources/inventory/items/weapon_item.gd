@@ -4,6 +4,7 @@ class_name WeaponItem
 @export var item_cooldown : float = 0.1
 @export var useable_on_cooldown : bool = false
 @export var combo_scenes : Array[PackedScene] = []
+@export var combo_add_cooldowns : Array[float] = []
 
 signal weapon_used(item_user : ItemUser)
 
@@ -25,6 +26,10 @@ func spawn_network_entity(_item_user : SpatialItemUser, item_use_node : Node3D) 
 		if _item_user.item_user_metadata.has("combo_progress"):
 			combo_progress = _item_user.item_user_metadata["combo_progress"]
 		cur_instantiate_scene = combo_scenes[combo_progress]
+
+		if combo_add_cooldowns.size() > combo_progress:
+			_item_user.item_use_cooldown += combo_add_cooldowns[combo_progress]
+
 		_item_user.item_user_metadata["combo_progress"] = (combo_progress + 1) % combo_scenes.size()
 
 	var additional_velocity_vector : Vector3 = Vector3.ZERO

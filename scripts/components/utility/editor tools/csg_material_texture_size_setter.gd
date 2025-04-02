@@ -9,7 +9,7 @@ extends Node
 func set_csg_texture_size(csg_node : CSGBox3D) -> void:
 	var csg_size : Vector3 = csg_node.size
 	var csg_material : StandardMaterial3D = material_to_apply.duplicate()
-	csg_material.uv1_scale = Vector3(csg_size.x, csg_size.z, csg_size.y) #Godot moment
+	csg_material.uv1_scale = Vector3(csg_size.z, csg_size.x, csg_size.y) #Godot moment
 	csg_node.material = csg_material
 
 func _process(delta):

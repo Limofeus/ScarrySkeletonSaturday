@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://6ypd48k7kbjj"]
+[gd_scene load_steps=7 format=3 uid="uid://6ypd48k7kbjj"]
 
 [ext_resource type="Script" path="res://scripts/ui/hotbar/hotbar.gd" id="1_71y6h"]
 [ext_resource type="PackedScene" uid="uid://knu7xi3jljm5" path="res://scenes/ui/hotbar_item_slot.tscn" id="1_chxdw"]
-[ext_resource type="Texture2D" uid="uid://blb8dwjc4v0gg" path="res://sprites/testing/test_texture.png" id="5_cbjwr"]
+[ext_resource type="Texture2D" uid="uid://dimcy7vvk1r3g" path="res://sprites/ui/slot_selector.png" id="3_qf5nk"]
+[ext_resource type="FontFile" uid="uid://carf6kvexo2l0" path="res://fonts/PirataOne-Regular.ttf" id="4_0l6f2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2dmry"]
 bg_color = Color(0, 0, 0, 0.556863)
@@ -37,7 +38,7 @@ scale = Vector2(0.4, 0.4)
 script = ExtResource("1_71y6h")
 slot_container = NodePath("../Panel/MarginContainer/HBoxContainer")
 hotbar_selector = NodePath("../Panel/SelectorHolder/HotbarSelector")
-label_item_name = NodePath("../Panel/ItemNameHolder/Label")
+label_item_name = NodePath("../Panel/SelectorHolder/HotbarSelector/ItemNameHolder/Label")
 default_selector_pos = 0.0
 hotbar_slot_scene = ExtResource("1_chxdw")
 
@@ -81,19 +82,24 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -55.59
-offset_right = 240.0
-offset_bottom = -25.59
+offset_top = -50.855
+offset_right = 230.0
+offset_bottom = 77.145
 grow_vertical = 0
-texture = ExtResource("5_cbjwr")
-expand_mode = 1
+texture = ExtResource("3_qf5nk")
+expand_mode = 5
 
-[node name="ItemNameHolder" type="Control" parent="Panel"]
+[node name="ItemNameHolder" type="Control" parent="Panel/SelectorHolder/HotbarSelector"]
 layout_mode = 2
+anchors_preset = 0
+offset_left = 118.0
+offset_top = 50.855
+offset_right = 118.0
+offset_bottom = 50.855
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="Label" type="Label" parent="Panel/ItemNameHolder"]
+[node name="Label" type="Label" parent="Panel/SelectorHolder/HotbarSelector/ItemNameHolder"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -102,5 +108,7 @@ offset_left = -20.0
 offset_right = 20.0
 offset_bottom = 57.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 41
-text = "ITEM NAME"
+theme_override_fonts/font = ExtResource("4_0l6f2")
+theme_override_font_sizes/font_size = 60
+text = "Swoed"
+horizontal_alignment = 1

@@ -18,8 +18,8 @@
 [ext_resource type="Script" path="res://scripts/components/inventory/creature_inventory_component.gd" id="16_55iqr"]
 [ext_resource type="Script" path="res://scripts/visual/creatures/healthbars/healthbar_updater.gd" id="16_hqov5"]
 [ext_resource type="Script" path="res://scripts/resources/inventory/items/inventory_item.gd" id="17_gsjbo"]
-[ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/combo_projectile_weapon.tres" id="18_nip3u"]
-[ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/single_projectile_weapon.tres" id="19_ec6vj"]
+[ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/sword_1_weapon.tres" id="18_nip3u"]
+[ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/staff_1_weapon.tres" id="19_ec6vj"]
 [ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/display_tool_item.gd" id="20_vjqr2"]
 [ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="21_cikrs"]
 [ext_resource type="Script" path="res://scripts/components/sync/position_sync.gd" id="22_xa1ep"]
@@ -153,7 +153,7 @@ network_entity = NodePath("../..")
 script = ExtResource("5_ffegc")
 far_distance = 16.0
 close_distance = 7.0
-windup_time = 0.2
+windup_time = 0.3
 attack_time = 0.3
 monster_springing_node = NodePath("../../Creature/Head/MonsterAttackScaler")
 owner_change_component = NodePath("../OwnerChangeComponent")

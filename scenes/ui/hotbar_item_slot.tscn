@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://knu7xi3jljm5"]
+[gd_scene load_steps=9 format=3 uid="uid://knu7xi3jljm5"]
 
 [ext_resource type="Script" path="res://scripts/ui/hotbar/hotbar_slot.gd" id="1_ikd3e"]
 [ext_resource type="Texture2D" uid="uid://djr0qvb7dkyl7" path="res://sprites/ui/slot_border_1.png" id="3_6y6sb"]
 [ext_resource type="FontFile" uid="uid://4p42hhp6h76q" path="res://fonts/vollkorn/Vollkorn-Bold.otf" id="3_vgvcx"]
 [ext_resource type="Texture2D" uid="uid://bigotb143s2ov" path="res://sprites/ui/slot_bg_1.png" id="4_sgp6t"]
+[ext_resource type="FontFile" uid="uid://carf6kvexo2l0" path="res://fonts/PirataOne-Regular.ttf" id="5_bimgx"]
 [ext_resource type="Texture2D" uid="uid://bntgl6sg14j56" path="res://sprites/ui/slot_selector_right.png" id="6_0n56a"]
 [ext_resource type="Texture2D" uid="uid://4hsfhwxdrcbd" path="res://sprites/ui/slot_selector_left.png" id="7_cyxjv"]
 
@@ -94,16 +95,6 @@ grow_vertical = 2
 texture = ExtResource("4_sgp6t")
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemImage" type="TextureRect" parent="InsideSlot"]
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.231343
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_use_anchors_ = true
-
 [node name="SlotNumber" type="Label" parent="InsideSlot"]
 layout_mode = 1
 anchors_preset = -1
@@ -117,7 +108,7 @@ grow_vertical = 2
 size_flags_vertical = 0
 theme_override_constants/shadow_offset_x = 6
 theme_override_constants/shadow_offset_y = 6
-theme_override_fonts/font = ExtResource("3_vgvcx")
+theme_override_fonts/font = ExtResource("5_bimgx")
 theme_override_font_sizes/font_size = 95
 text = "6"
 horizontal_alignment = 1
@@ -135,6 +126,7 @@ grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
 [node name="SelectorLeft" type="TextureRect" parent="InsideSlot/Selectors"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = -0.092233
@@ -146,6 +138,7 @@ texture = ExtResource("7_cyxjv")
 metadata/_edit_use_anchors_ = true
 
 [node name="SelectorRight" type="TextureRect" parent="InsideSlot/Selectors"]
+visible = false
 material = SubResource("ShaderMaterial_ooeog")
 layout_mode = 1
 anchors_preset = -1
@@ -158,3 +151,17 @@ grow_horizontal = 0
 grow_vertical = 0
 texture = ExtResource("6_0n56a")
 metadata/_edit_use_anchors_ = true
+
+[node name="ItemImage" type="TextureRect" parent="InsideSlot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -119.5
+offset_right = 150.0
+offset_bottom = 180.5
+grow_horizontal = 2
+grow_vertical = 2

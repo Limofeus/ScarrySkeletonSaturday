@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://d18ee7hebbod5"]
+[gd_scene load_steps=28 format=3 uid="uid://d18ee7hebbod5"]
 
 [ext_resource type="Texture2D" uid="uid://coeqr5p2toa25" path="res://sprites/testing/TEST_TEX.png" id="1_sfa5y"]
 [ext_resource type="Script" path="res://scripts/components/utility/editor tools/csg_material_texture_size_setter.gd" id="2_y1tiq"]
@@ -6,6 +6,9 @@
 [ext_resource type="Script" path="res://scripts/resources/visual/omnidir_sprite_sheet.gd" id="4_ne3ic"]
 [ext_resource type="Texture2D" uid="uid://b44xx5t4fp802" path="res://sprites/creatures/skeleton/Skeleton_SpriteSheet_Walk.png" id="5_axg5r"]
 [ext_resource type="Shader" path="res://shaders/spatial/creature_sprite_sheet.gdshader" id="6_bkkd4"]
+[ext_resource type="Script" path="res://scripts/world/entity spawning/spawn_entity_on_players_created.gd" id="7_4q7r7"]
+[ext_resource type="PackedScene" uid="uid://h4rhiwl8xmhl" path="res://scenes/entities/creatures/yolo_enemy.tscn" id="8_o782x"]
+[ext_resource type="PackedScene" uid="uid://bw2i466uid2v5" path="res://scenes/entities/creatures/yolo_ranged_enemy.tscn" id="9_fcomc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamas"]
 albedo_texture = ExtResource("1_sfa5y")
@@ -60,7 +63,7 @@ offsets = PackedFloat32Array(0.45, 0.571429)
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_3vb4o"]
 frequency = 0.3299
 
-[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_x7nva"]
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_7kev1"]
 color_ramp = SubResource("Gradient_y20lq")
 noise = SubResource("FastNoiseLite_3vb4o")
 
@@ -68,7 +71,7 @@ noise = SubResource("FastNoiseLite_3vb4o")
 density = 0.2
 albedo = Color(0.21875, 0.21875, 0.21875, 1)
 edge_fade = 0.0225313
-density_texture = SubResource("NoiseTexture3D_x7nva")
+density_texture = SubResource("NoiseTexture3D_7kev1")
 
 [sub_resource type="Resource" id="Resource_d13ty"]
 script = ExtResource("4_ne3ic")
@@ -222,3 +225,43 @@ transform = Transform3D(0.06, 0, 0, 0, 0.06, 0, 0, 0, 0.06, 0, 1.60655, 0)
 material_override = SubResource("ShaderMaterial_o55rv")
 mesh = SubResource("QuadMesh_rx52d")
 skeleton = NodePath("../../..")
+
+[node name="SkeletMeleSpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8783, 1.16903, -16.8424)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("8_o782x")
+
+[node name="SkeletMeleSpawn2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.9275, 1.16903, -16.8424)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("8_o782x")
+
+[node name="SkeletMeleSpawn3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.3377, 1.16903, -16.8424)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("8_o782x")
+
+[node name="SkeletMeleSpawn4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21.2827, 1.16903, -16.8424)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("8_o782x")
+
+[node name="SkeletMeleSpawn5" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.2263, 1.16903, -22.0974)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("9_fcomc")
+
+[node name="SkeletMeleSpawn6" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.2754, 1.16903, -22.0974)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("9_fcomc")
+
+[node name="SkeletMeleSpawn7" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6856, 1.16903, -22.0974)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("9_fcomc")
+
+[node name="SkeletMeleSpawn8" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.6306, 1.16903, -22.0974)
+script = ExtResource("7_4q7r7")
+entity_to_spawn = ExtResource("9_fcomc")
