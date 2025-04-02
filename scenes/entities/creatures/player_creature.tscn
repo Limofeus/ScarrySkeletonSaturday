@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://bqdtx48rr07yc"]
+[gd_scene load_steps=60 format=3 uid="uid://bqdtx48rr07yc"]
 
 [ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_63m7l"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_etd3o"]
@@ -11,15 +11,17 @@
 [ext_resource type="Script" path="res://scripts/states/movement states/creature_jump_state.gd" id="9_s76jf"]
 [ext_resource type="Script" path="res://scripts/components/player/camera_mounter.gd" id="10_m48n2"]
 [ext_resource type="Script" path="res://scripts/components/inventory/creature_item_user_component.gd" id="11_hrnlk"]
-[ext_resource type="Script" path="res://scripts/components/utility/visible_if_owner.gd" id="12_4i81v"]
 [ext_resource type="Script" path="res://scripts/components/player/movement_effects_parameters_send.gd" id="13_tqlmt"]
 [ext_resource type="Script" path="res://scripts/components/inventory/player_hotbar_component.gd" id="14_3ehfr"]
 [ext_resource type="Script" path="res://scripts/debug/testing/test_inv_item_adder.gd" id="15_xaj14"]
 [ext_resource type="Script" path="res://scripts/resources/inventory/items/inventory_item.gd" id="16_tlce0"]
-[ext_resource type="Resource" uid="uid://hr26l03c7p77" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item.tres" id="17_fvq0r"]
+[ext_resource type="Resource" uid="uid://hr26l03c7p77" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item_1.tres" id="17_fvq0r"]
 [ext_resource type="Resource" uid="uid://bpvdms7w0up6v" path="res://resources/inventory items/tools/spawner items/roomba_spawner_item.tres" id="18_x1fg6"]
 [ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/combo_projectile_weapon.tres" id="19_640nl"]
 [ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/single_projectile_weapon.tres" id="20_bfh14"]
+[ext_resource type="Script" path="res://scripts/visual/creatures/healthbars/healthbar_updater.gd" id="21_3dyv3"]
+[ext_resource type="Resource" uid="uid://040yl843thoa" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item_2.tres" id="23_awi5f"]
+[ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/fancy tool display/fancy_tool_display_updater.gd" id="24_ivi5d"]
 [ext_resource type="Script" path="res://scripts/components/sync/creature_sprite_sheet_sync.gd" id="27_7ghp2"]
 [ext_resource type="Script" path="res://scripts/visual/creatures/sprite_sheet_billboard.gd" id="27_e2f3t"]
 [ext_resource type="Resource" uid="uid://b75lkdk8nosox" path="res://resources/sprite sheets/creatures/skeleton/skeleton_walk_fwd_omnidir_sprite_sheet.tres" id="28_b26iv"]
@@ -30,11 +32,14 @@
 [ext_resource type="Shader" path="res://shaders/spatial/creature_sprite_sheet.gdshader" id="30_3wo27"]
 [ext_resource type="Resource" uid="uid://b1f7d4cf2gc3x" path="res://resources/sprite sheets/creatures/skeleton/skeleton_sidestep_left_omnidir_sprite_sheet.tres" id="30_5mosc"]
 [ext_resource type="Resource" uid="uid://bma6n50ls37tp" path="res://resources/sprite sheets/creatures/skeleton/skeleton_sidestep_right_omnidir_sprite_sheet.tres" id="31_2pcem"]
-[ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/display_tool_item.gd" id="31_khg5c"]
 [ext_resource type="Resource" uid="uid://b3jk6eigtjjyo" path="res://resources/sprite sheets/creatures/skeleton/skeleton_idle_omnidir_sprite_sheet.tres" id="32_3sbut"]
 [ext_resource type="Script" path="res://scripts/components/utility/set_material_based_on_owner.gd" id="32_g4v40"]
+[ext_resource type="PackedScene" uid="uid://df3xjwnja4ke" path="res://scenes/visual/fancy_tool_displayer.tscn" id="33_ef6d6"]
 [ext_resource type="Script" path="res://scripts/components/sync/position_sync.gd" id="33_melic"]
+[ext_resource type="Shader" path="res://shaders/mesh effects/textured_alpha_additive.gdshader" id="34_5cia7"]
 [ext_resource type="Script" path="res://scripts/components/sync/optimized_rotation_sync.gd" id="34_xex5s"]
+[ext_resource type="Texture2D" uid="uid://dhxfkl1b3x4bf" path="res://sprites/effects/circle1_1.png" id="35_wwoik"]
+[ext_resource type="Script" path="res://scripts/visual/control_node_to_world_position.gd" id="39_865de"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wuj5g"]
 albedo_color = Color(0.196071, 0.25379, 1, 1)
@@ -71,6 +76,19 @@ cap_bottom = false
 radius = 0.3
 height = 1.75
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_dskx3"]
+radius = 0.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8h034"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("34_5cia7")
+shader_parameter/main_color = Color(1, 1, 1, 1)
+shader_parameter/power_mult = 20.0
+shader_parameter/alpha_mult = 1.0
+shader_parameter/mpimap_offset = 0.0
+shader_parameter/main_texture = ExtResource("35_wwoik")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_f0emg"]
 resource_local_to_scene = true
 render_priority = 0
@@ -84,6 +102,42 @@ shader_parameter/sprite_sheet = ExtResource("29_v3b7r")
 
 [sub_resource type="QuadMesh" id="QuadMesh_k4lpv"]
 size = Vector2(38, 51.2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jpr2b"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vdsfb"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iocts"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e626i"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+corner_detail = 1
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_qlogj"]
 
@@ -151,7 +205,7 @@ next_states = [NodePath("../CreatureMovementState")]
 
 [node name="CameraMounter" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("camera_mount", "network_entity")]
 script = ExtResource("10_m48n2")
-camera_mount = NodePath("../../Player/Head/CameraMount")
+camera_mount = NodePath("../../Player/Head/CameraMount/SpringArm3D/ActualCameraMount")
 unsynced_node_path = "/root/Main/CameraRig"
 network_entity = NodePath("../..")
 
@@ -166,12 +220,6 @@ head_node = NodePath("../../Player/Head/CameraMount")
 network_entity = NodePath("../..")
 
 [node name="--- Visuals & Looks ---" type="Node" parent="OwnerLogic"]
-
-[node name="PlayerBodyVisibility" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("node_to_make_visible", "network_entity")]
-script = ExtResource("12_4i81v")
-node_to_make_visible = NodePath("../../Player/Head/SpriteSheetBillboard")
-visible_to_owner = false
-network_entity = NodePath("../..")
 
 [node name="MovementEffectsSend" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("player_body", "network_entity")]
 script = ExtResource("13_tqlmt")
@@ -202,19 +250,28 @@ creature_name = "Player"
 character_body = NodePath("../../Player")
 head_node = NodePath("../../Player/Head")
 look_node = NodePath("../../Player/Head/CameraMount")
+max_health = 5.0
+health = 5.0
 spatial_node = NodePath("../../Player")
 network_entity = NodePath("../..")
+
+[node name="HealthbarUpdater" type="Node" parent="SharedLogic/CreatureAttributes" node_paths=PackedStringArray("killable_attributes", "main_healthbar", "effect_healthbar")]
+script = ExtResource("21_3dyv3")
+killable_attributes = NodePath("..")
+main_healthbar = NodePath("../../../Player/Head/Healthbar/HealthbarHolder/HitBar/HealthBar")
+effect_healthbar = NodePath("../../../Player/Head/Healthbar/HealthbarHolder/HitBar")
 
 [node name="PlayerInventory" type="Node" parent="SharedLogic" node_paths=PackedStringArray("player_hotbar_component", "network_entity")]
 script = ExtResource("29_8gigg")
 player_hotbar_component = NodePath("../../OwnerLogic/PlayerHotbar")
 inventory_size = 9
-initial_items = Array[ExtResource("16_tlce0")]([ExtResource("17_fvq0r"), ExtResource("18_x1fg6"), ExtResource("19_640nl"), ExtResource("20_bfh14")])
+initial_items = Array[ExtResource("16_tlce0")]([ExtResource("18_x1fg6"), ExtResource("19_640nl"), ExtResource("20_bfh14"), ExtResource("23_awi5f"), ExtResource("17_fvq0r")])
 network_entity = NodePath("../..")
 
-[node name="DisplayToolItem" type="Node" parent="SharedLogic/PlayerInventory" node_paths=PackedStringArray("tool_item_parent_node")]
-script = ExtResource("31_khg5c")
-tool_item_parent_node = NodePath("../../../Player/Head/CameraMount/ToolItemDisplay")
+[node name="UpdateFancyItemDisplay" type="Node" parent="SharedLogic/PlayerInventory" node_paths=PackedStringArray("tool_display_visual", "creature_item_user_component")]
+script = ExtResource("24_ivi5d")
+tool_display_visual = NodePath("../../../Player/Head/FancyToolDisplayer")
+creature_item_user_component = NodePath("../../../OwnerLogic/CreatureItemUser")
 
 [node name="SetMaterialBasedOnOwner" type="Node" parent="SharedLogic" node_paths=PackedStringArray("mesh", "network_entity")]
 script = ExtResource("32_g4v40")
@@ -265,9 +322,17 @@ skeleton = NodePath("../..")
 shape = SubResource("CapsuleShape3D_ws0uc")
 
 [node name="Head" type="Node3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 
 [node name="CameraMount" type="Node3D" parent="Player/Head"]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/Head/CameraMount"]
+transform = Transform3D(1, 0, 0, 0, 0.97437, 0.224951, 0, -0.224951, 0.97437, 0, 0, 0)
+shape = SubResource("SphereShape3D_dskx3")
+spring_length = 2.0
+
+[node name="ActualCameraMount" type="Node3D" parent="Player/Head/CameraMount/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.97437, -0.224951, 0, 0.224951, 0.97437, 0, -0.00138885, 1.99341)
 
 [node name="BodyRaycast" type="RayCast3D" parent="Player/Head/CameraMount"]
 enabled = false
@@ -275,14 +340,18 @@ target_position = Vector3(0, 0, -10)
 collision_mask = 7
 hit_back_faces = false
 
-[node name="ToolItemDisplay" type="Node3D" parent="Player/Head/CameraMount"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.39438, -0.538827, -0.48142)
+[node name="FancyToolDisplayer" parent="Player/Head" instance=ExtResource("33_ef6d6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.95, -0.4)
+magic_circle_material = SubResource("ShaderMaterial_8h034")
+item_selected_circle_spin_speed = 3.0
+item_selected_visual_spin_speed = 1.5
+scale_spring_damping = 0.9
 
 [node name="SpatialItemUse" type="Node3D" parent="Player/Head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.45, 0)
 
 [node name="SpriteSheetBillboard" type="Node3D" parent="Player/Head" node_paths=PackedStringArray("billboard_node")]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -1.51918, 0)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -1.66918, 0)
 script = ExtResource("27_e2f3t")
 cur_sprite_sheet = ExtResource("32_3sbut")
 cycle_speed_mult = 12.0
@@ -294,6 +363,66 @@ transform = Transform3D(-0.06, 0, -5.24537e-09, 0, 0.06, 0, 5.24537e-09, 0, -0.0
 material_override = SubResource("ShaderMaterial_f0emg")
 mesh = SubResource("QuadMesh_k4lpv")
 skeleton = NodePath("../..")
+
+[node name="Healthbar" type="Node3D" parent="Player/Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="HealthbarPosition" type="Node" parent="Player/Head/Healthbar" node_paths=PackedStringArray("position_node", "control_node")]
+script = ExtResource("39_865de")
+position_node = NodePath("..")
+control_node = NodePath("../HealthbarHolder")
+
+[node name="HealthbarHolder" type="Control" parent="Player/Head/Healthbar"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 4
+
+[node name="HitBar" type="ProgressBar" parent="Player/Head/Healthbar/HealthbarHolder"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -8.0
+offset_right = 40.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_jpr2b")
+theme_override_styles/fill = SubResource("StyleBoxFlat_vdsfb")
+max_value = 1.0
+step = 0.0
+value = 0.705
+show_percentage = false
+
+[node name="HealthBar" type="ProgressBar" parent="Player/Head/Healthbar/HealthbarHolder/HitBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -4.0
+offset_right = 40.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxEmpty_iocts")
+theme_override_styles/fill = SubResource("StyleBoxFlat_e626i")
+max_value = 1.0
+step = 0.0
+value = 0.485
+show_percentage = false
 
 [node name="PhysicsPropogationArea" type="Area3D" parent="Player"]
 collision_layer = 0

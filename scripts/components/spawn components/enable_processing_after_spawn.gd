@@ -5,6 +5,8 @@ const PROCESS_SET_CHANNEL = 0
 @export var nodes_to_process : Array[Node]
 @export var enable_before_physics_frame : bool = true
 
+signal nodes_enabled()
+
 func _ready():
 	set_nodes_process_mode(Node.PROCESS_MODE_DISABLED)
 
@@ -18,6 +20,7 @@ func enable_processing() -> void:
 		get_tree().physics_frame.connect(callable, CONNECT_ONE_SHOT)
 	else:
 		set_nodes_process_mode(Node.PROCESS_MODE_INHERIT)
+	nodes_enabled.emit()
 
 func set_nodes_process_mode(process_mode_to_set) -> void:
 	for node in nodes_to_process:

@@ -1,10 +1,11 @@
 extends SpatialAttributes
 class_name KillableAttributes
 
+@export var max_health : float = 1.0
 @export var health : float = 1.0
 @export var team_id : int = 0
 
-signal on_take_damage(damage_ammount : float)
+signal on_take_damage(damage_ammount : float, damager_peer : int)
 signal on_death()
 
 func recieve_interaction(interaction : Interaction, interacted_entity : InteractableNetworkEntity) -> void:
@@ -18,12 +19,12 @@ func process_projectile(projectile : ProjectileComponent) -> void:
 func process_damage(damage_resource : DamageResource) -> void:
 	if damage_resource == null:
 		return
-	take_damage.rpc(damage_resource.damage_ammount)
+	take_damage.rpc(damage_resource.damage_ammount, multiplayer.get_unique_id())
 
 @rpc("any_peer", "call_local", "reliable")
-func take_damage(damage_ammount : float) -> void:
+func take_damage(damage_ammount : float, damager_peer : int) -> void:
 	health -= damage_ammount
-	on_take_damage.emit(damage_ammount)
+	on_take_damage.emit(damage_ammount, damager_peer)
 
 	#print("Took damage on peer: " + str(multiplayer.get_unique_id()) + " health: " + str(health))
 	DebugDraw3D.draw_sphere(spatial_node.global_position, 0.75, Color.RED, 0.2)

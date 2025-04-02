@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode blend_mix, shadows_disabled, cull_disabled;
+render_mode unshaded, blend_add, shadows_disabled, cull_disabled;
 
 uniform sampler2D hit_texture;
 uniform vec3 main_color : source_color = vec3(0.0);
@@ -10,7 +10,7 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO = main_color;
 	float hit_alpha = texture(hit_texture, UV).a;
+	ALBEDO = main_color * projectile_lifetime * hit_alpha;
 	ALPHA = hit_alpha * projectile_lifetime;
 }

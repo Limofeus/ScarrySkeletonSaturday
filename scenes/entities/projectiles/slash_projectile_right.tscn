@@ -16,20 +16,20 @@ script = ExtResource("6_qynhe")
 damage_ammount = 2.0
 damage_type = 0
 
-[sub_resource type="Curve" id="Curve_f8krt"]
-_data = [Vector2(0, 0), 0.0, 2.0, 0, 1, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 1, 0]
+[sub_resource type="Curve" id="Curve_1rfa4"]
+_data = [Vector2(0, 0), 0.0, 9.81218, 0, 0, Vector2(0.253086, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jb8ja"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_pxc8x")
-shader_parameter/main_color = Color(0, 0, 0, 1)
+shader_parameter/main_color = Color(0.784314, 0.784314, 0.784314, 1)
 shader_parameter/projectile_lifetime = 0.0
 shader_parameter/hit_texture = ExtResource("9_esu10")
 
 [sub_resource type="Curve" id="Curve_7cwke"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_euxgr"]
@@ -77,7 +77,7 @@ network_entity = NodePath("../..")
 [node name="SlashShader" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("projectile")]
 script = ExtResource("7_6qufn")
 projectile = NodePath("..")
-curve_mapping = SubResource("Curve_f8krt")
+curve_mapping = SubResource("Curve_1rfa4")
 shader_material = SubResource("ShaderMaterial_jb8ja")
 
 [node name="SlashRotation" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("projectile", "visual_to_rotate")]

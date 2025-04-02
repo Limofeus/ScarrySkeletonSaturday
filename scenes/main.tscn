@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://fjib4361ovfd"]
+[gd_scene load_steps=48 format=3 uid="uid://fjib4361ovfd"]
 
 [ext_resource type="Script" path="res://scripts/networking/network_manager.gd" id="1_1ap1m"]
 [ext_resource type="Script" path="res://scripts/utility/fps_counter.gd" id="1_bkmm5"]
@@ -14,8 +14,11 @@
 [ext_resource type="Material" uid="uid://dox7ghi1mskpg" path="res://materials/effects/overlays/speedlines_overlay.tres" id="12_oyb24"]
 [ext_resource type="Script" path="res://scripts/visual/creatures/sprite_sheet_billboard.gd" id="13_dtx4f"]
 [ext_resource type="Shader" path="res://shaders/spatial/creature_sprite_sheet.gdshader" id="13_hmjwo"]
+[ext_resource type="Script" path="res://scripts/components/utility/editor tools/csg_material_texture_size_setter.gd" id="13_ud5bl"]
 [ext_resource type="Script" path="res://scripts/resources/visual/omnidir_sprite_sheet.gd" id="14_h4hk5"]
 [ext_resource type="Texture2D" uid="uid://b44xx5t4fp802" path="res://sprites/creatures/skeleton/Skeleton_SpriteSheet_Walk.png" id="14_o2t21"]
+[ext_resource type="Shader" path="res://shaders/main menu effects/dither_canvas.gdshader" id="18_v1b13"]
+[ext_resource type="Texture2D" uid="uid://dsp2730flqo78" path="res://sprites/menu/dither2.png" id="19_6gyjg"]
 [ext_resource type="PackedScene" uid="uid://6ypd48k7kbjj" path="res://scenes/ui/items_hotbar.tscn" id="21_iy7cf"]
 
 [sub_resource type="Resource" id="Resource_oj2bi"]
@@ -23,27 +26,64 @@ script = ExtResource("10_aukot")
 position = Vector3(20, 10, 20)
 rotation = Vector3(0, 0, 0)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8lgcm"]
+[sub_resource type="Gradient" id="Gradient_yk65l"]
+interpolation_mode = 2
+interpolation_color_space = 2
+offsets = PackedFloat32Array(0.404167, 1)
 
-[sub_resource type="Sky" id="Sky_mqa6u"]
-sky_material = SubResource("ProceduralSkyMaterial_8lgcm")
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_is43h"]
+frequency = 0.0355
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_cmww0"]
+seamless = true
+color_ramp = SubResource("Gradient_yk65l")
+noise = SubResource("FastNoiseLite_is43h")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ewqmj"]
+sky_top_color = Color(0, 0, 0, 1)
+sky_horizon_color = Color(1, 0, 0, 1)
+sky_energy_multiplier = 1.3
+sky_cover = SubResource("NoiseTexture2D_cmww0")
+sky_cover_modulate = Color(0.269531, 0, 0.0109459, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(1, 0, 0, 1)
+ground_curve = 0.0399999
+ground_energy_multiplier = 1.3
+sun_angle_max = 81.37
+sun_curve = 0.0369158
+
+[sub_resource type="Sky" id="Sky_ag7jo"]
+sky_material = SubResource("ProceduralSkyMaterial_ewqmj")
 
 [sub_resource type="Environment" id="Environment_g77om"]
 background_mode = 2
-sky = SubResource("Sky_mqa6u")
+sky = SubResource("Sky_ag7jo")
+ambient_light_source = 3
+reflected_light_source = 2
 tonemap_mode = 3
+ssr_enabled = true
+ssao_enabled = true
 ssao_light_affect = 1.0
 ssao_ao_channel_affect = 1.0
 glow_enabled = true
+fog_enabled = true
 fog_mode = 1
+fog_light_color = Color(0, 0, 0, 1)
 fog_density = 1.0
-volumetric_fog_density = 0.01
-volumetric_fog_ambient_inject = 1.0
+fog_aerial_perspective = 0.4
+fog_sky_affect = 0.519
+fog_depth_curve = 0.659753
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
 adjustment_contrast = 1.5
 adjustment_saturation = 2.0
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_rqodr"]
 auto_exposure_enabled = true
+auto_exposure_scale = 0.2
+auto_exposure_speed = 2.0
+auto_exposure_min_sensitivity = 50.0
+auto_exposure_max_sensitivity = 500.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lamas"]
 albedo_texture = ExtResource("11_yjua0")
@@ -54,6 +94,59 @@ size = Vector3(1, 10, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kf0tq"]
 size = Vector3(1, 10, 1)
+
+[sub_resource type="Gradient" id="Gradient_p5gqa"]
+offsets = PackedFloat32Array(0.488806, 0.645522)
+colors = PackedColorArray(0.226563, 0.226563, 0.226563, 1, 0.601563, 0.601563, 0.601563, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_n5doh"]
+frequency = 0.0316
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gfgok"]
+seamless = true
+color_ramp = SubResource("Gradient_p5gqa")
+noise = SubResource("FastNoiseLite_n5doh")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8tmrx"]
+albedo_color = Color(0.25, 0.25, 0.25, 1)
+albedo_texture = SubResource("NoiseTexture2D_gfgok")
+uv1_scale = Vector3(114.753, 98.604, 8.58411)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sat28"]
+albedo_color = Color(0.25, 0.25, 0.25, 1)
+albedo_texture = SubResource("NoiseTexture2D_gfgok")
+uv1_scale = Vector3(114.753, 98.604, 8.58411)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_16qb8"]
+albedo_color = Color(0.25, 0.25, 0.25, 1)
+albedo_texture = SubResource("NoiseTexture2D_gfgok")
+uv1_scale = Vector3(58.8662, 30.4498, 24.3699)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dcxec"]
+albedo_color = Color(0.25, 0.25, 0.25, 1)
+albedo_texture = SubResource("NoiseTexture2D_gfgok")
+uv1_scale = Vector3(47.2969, 23.748, 14.7918)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r2s4b"]
+albedo_color = Color(0.25, 0.25, 0.25, 1)
+albedo_texture = SubResource("NoiseTexture2D_gfgok")
+uv1_scale = Vector3(114.753, 100.814, 8.58411)
+
+[sub_resource type="Gradient" id="Gradient_y20lq"]
+offsets = PackedFloat32Array(0.45, 0.571429)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_3vb4o"]
+frequency = 0.3299
+
+[sub_resource type="NoiseTexture3D" id="NoiseTexture3D_x7nva"]
+color_ramp = SubResource("Gradient_y20lq")
+noise = SubResource("FastNoiseLite_3vb4o")
+
+[sub_resource type="FogMaterial" id="FogMaterial_26j6m"]
+density = 0.2
+albedo = Color(0.21875, 0.21875, 0.21875, 1)
+edge_fade = 0.0225313
+density_texture = SubResource("NoiseTexture3D_x7nva")
 
 [sub_resource type="Resource" id="Resource_d13ty"]
 script = ExtResource("14_h4hk5")
@@ -74,6 +167,14 @@ shader_parameter/sprite_sheet_columns = 16
 
 [sub_resource type="QuadMesh" id="QuadMesh_rx52d"]
 size = Vector2(38, 51.2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qd0fb"]
+shader = ExtResource("18_v1b13")
+shader_parameter/pixel_size = 1.0
+shader_parameter/dither_power = 0.75
+shader_parameter/dither_scroll_speed = Vector2(2, 2)
+shader_parameter/dither_tex_size = Vector2(5, 5)
+shader_parameter/dither_texture = ExtResource("19_6gyjg")
 
 [node name="Main" type="Node"]
 
@@ -138,53 +239,123 @@ camera_attributes = SubResource("CameraAttributesPractical_rqodr")
 transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
 shadow_enabled = true
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="World"]
-transform = Transform3D(300, 0, 0, 0, 300, 0, 0, 0, 300, 2.054, 1000, -4000)
-material_override = SubResource("StandardMaterial3D_lamas")
-mesh = SubResource("BoxMesh_aaqok")
+[node name="Testing" type="Node3D" parent="World"]
+transform = Transform3D(5.82983, 0, 0, 0, 5.82983, 0, 0, 0, 5.82983, 1.01979, 1.94386, -21.2873)
 
-[node name="StaticBody3D2" type="StaticBody3D" parent="World"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.974, 5, 17.674)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="World/StaticBody3D2"]
-shape = SubResource("BoxShape3D_kf0tq")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="World/StaticBody3D2"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="World/Testing"]
+transform = Transform3D(51.4595, 0, 0, 0, 51.4595, 0, 0, 0, 51.4595, 0.1774, 171.198, -682.475)
 material_override = SubResource("StandardMaterial3D_lamas")
 mesh = SubResource("BoxMesh_aaqok")
 skeleton = NodePath("../..")
 
-[node name="ChunkHolder" type="Node3D" parent="World"]
+[node name="StaticBody3D2" type="StaticBody3D" parent="World/Testing"]
+transform = Transform3D(0.171532, 0, 0, 0, 0.171532, 0, 0, 0, 0.171532, 0.163677, 0.524225, 6.68309)
 
-[node name="Label3D" type="Label3D" parent="World"]
-transform = Transform3D(5.82983, 0, 0, 0, 5.82983, 0, 0, 0, 5.82983, 1.01979, 1.94386, -21.2873)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Testing/StaticBody3D2"]
+shape = SubResource("BoxShape3D_kf0tq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Testing/StaticBody3D2"]
+material_override = SubResource("StandardMaterial3D_lamas")
+mesh = SubResource("BoxMesh_aaqok")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="World/Testing"]
+transform = Transform3D(0.171532, 0, 0, 0, 0.171532, 0, 0, 0, 0.171532, 0.163677, 0.524225, 2.30339)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Testing/StaticBody3D3"]
+shape = SubResource("BoxShape3D_kf0tq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Testing/StaticBody3D3"]
+material_override = SubResource("StandardMaterial3D_lamas")
+mesh = SubResource("BoxMesh_aaqok")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D4" type="StaticBody3D" parent="World/Testing"]
+transform = Transform3D(0.171532, 0, 0, 0, 0.171532, 0, 0, 0, 0.171532, 0.163677, 0.524225, -4.52011)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Testing/StaticBody3D4"]
+shape = SubResource("BoxShape3D_kf0tq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Testing/StaticBody3D4"]
+material_override = SubResource("StandardMaterial3D_lamas")
+mesh = SubResource("BoxMesh_aaqok")
+skeleton = NodePath("../../..")
+
+[node name="StaticBody3D5" type="StaticBody3D" parent="World/Testing"]
+transform = Transform3D(0.171532, 0, 0, 0, 0.171532, 0, 0, 0, 0.171532, 0.163677, 0.524225, -14.3746)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="World/Testing/StaticBody3D5"]
+shape = SubResource("BoxShape3D_kf0tq")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="World/Testing/StaticBody3D5"]
+material_override = SubResource("StandardMaterial3D_lamas")
+mesh = SubResource("BoxMesh_aaqok")
+skeleton = NodePath("../../..")
+
+[node name="Label3D" type="Label3D" parent="World/Testing"]
 modulate = Color(0, 0.214811, 1, 1)
 text = "-Z"
 
-[node name="Label3D2" type="Label3D" parent="World"]
-transform = Transform3D(0.490971, 0, 5.80912, 0, 5.82983, 0, -5.80912, 0, 0.490971, -19.3721, 1.94386, -1.20105)
+[node name="Label3D2" type="Label3D" parent="World/Testing"]
+transform = Transform3D(0.084217, 0, 0.996448, 0, 1, 0, -0.996448, 0, 0.084217, -3.49785, 0, 3.44543)
 modulate = Color(1, 0, 0.423702, 1)
 text = "-X"
 
-[node name="Label3D3" type="Label3D" parent="World"]
-transform = Transform3D(-5.79355, 0, -0.649441, 0, 5.82983, 0, 0.649441, 0, -5.79355, 2.89003, 1.94386, 23.093)
+[node name="Label3D3" type="Label3D" parent="World/Testing"]
+transform = Transform3D(-0.993777, 0, -0.1114, 0, 1, 0, 0.1114, 0, -0.993777, 0.320805, 0, 7.61262)
 modulate = Color(0, 0.00750613, 1, 1)
 text = "Z"
 
-[node name="Label3D4" type="Label3D" parent="World"]
-transform = Transform3D(2.91324, 0, -5.04975, 0, 5.82983, 0, 5.04975, 0, 2.91324, 14.6177, 1.94386, -0.98241)
+[node name="Label3D4" type="Label3D" parent="World/Testing"]
+transform = Transform3D(0.499713, 0, -0.866192, 0, 1, 0, 0.866192, 0, 0.499713, 2.33247, 0, 3.48293)
 modulate = Color(1, 0, 0.0517225, 1)
 text = "X"
 
-[node name="Label3D5" type="Label3D" parent="World"]
-transform = Transform3D(5.73976, 0, -1.02086, 0, 5.82983, 0, 1.02086, 0, 5.73976, 19.058, 1.37404, 11.666)
+[node name="Label3D5" type="Label3D" parent="World/Testing"]
+transform = Transform3D(0.98455, 0, -0.17511, 0, 1, 0, 0.17511, 0, 0.98455, 3.09412, -0.0977421, 5.65253)
 modulate = Color(1, 0, 0.0517225, 1)
 text = "CHUNK 0, 0"
 
-[node name="CSGBox3D" type="CSGBox3D" parent="World"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2075, -4.19916, -3.51813)
+[node name="Csgs" type="Node3D" parent="World" node_paths=PackedStringArray("csg_array")]
+script = ExtResource("13_ud5bl")
+material_to_apply = SubResource("StandardMaterial3D_8tmrx")
+csg_array = [NodePath("CSGBox3D"), NodePath("CSGBox3D3"), NodePath("CSGBox3D3/CSGBox3D4"), NodePath("CSGBox3D2")]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="World/Csgs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2075, -4.19916, -4.62315)
+use_collision = true
+size = Vector3(114.753, 8.58411, 98.604)
+material = SubResource("StandardMaterial3D_sat28")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="World/Csgs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 71.8643, 7.94408, 17.7467)
+use_collision = true
+size = Vector3(58.8662, 24.3699, 30.4498)
+material = SubResource("StandardMaterial3D_16qb8")
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="World/Csgs/CSGBox3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.8058, -0.465731, 0)
+operation = 2
+use_collision = true
+size = Vector3(47.2969, 14.7918, 23.748)
+material = SubResource("StandardMaterial3D_dcxec")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="World/Csgs"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.2075, -4.19916, -102.925)
 use_collision = true
 size = Vector3(114.753, 8.58411, 100.814)
+material = SubResource("StandardMaterial3D_r2s4b")
+
+[node name="FogVolume" type="FogVolume" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58.767, 6.40221, 17.7467)
+size = Vector3(18.749, 16.0439, 22.301)
+material = SubResource("FogMaterial_26j6m")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 59.5205, 6.40221, 17.7467)
+light_color = Color(1, 0.0685818, 0, 1)
+light_energy = 60.0
+omni_range = 13.375
 
 [node name="TestThingy" type="Node3D" parent="World" node_paths=PackedStringArray("billboard_node")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.30332, 4.76837e-07, 13.2141)
@@ -247,6 +418,16 @@ text = "127.0.0.1"
 [node name="PortField" type="LineEdit" parent="UI Layer/UI/DebugWindow/VBoxContainer"]
 layout_mode = 2
 text = "1337"
+
+[node name="Pixelezation" type="ColorRect" parent="UI Layer"]
+material = SubResource("ShaderMaterial_qd0fb")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.156863)
 
 [connection signal="text_changed" from="UI Layer/UI/DebugWindow/VBoxContainer/IpField" to="DebugNode" method="set_connection_address_string"]
 [connection signal="text_changed" from="UI Layer/UI/DebugWindow/VBoxContainer/PortField" to="DebugNode" method="set_connection_port_string"]

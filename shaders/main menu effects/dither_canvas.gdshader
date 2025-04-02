@@ -18,6 +18,7 @@ vec2 pixelate_uv(vec2 uv, vec2 sps, float pixelation_size){
 }
 
 void fragment(){
+	float alpha_save = COLOR.a;
 	vec2 uv = SCREEN_UV;
 	vec4 base = texture(screen_texture, pixelate_uv(uv, SCREEN_PIXEL_SIZE, pixel_size));
 	vec2 noise_uv = uv / (SCREEN_PIXEL_SIZE * dither_tex_size);
@@ -25,5 +26,6 @@ void fragment(){
 	noise_uv /= pixel_size;
 	vec4 noise = texture(dither_texture, noise_uv);
 	COLOR = round(base + (dither_power * (noise -0.5)));
+	COLOR.a = alpha_save;
 	//COLOR = noise;
 }

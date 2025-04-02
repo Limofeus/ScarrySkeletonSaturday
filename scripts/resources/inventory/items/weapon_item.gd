@@ -5,6 +5,8 @@ class_name WeaponItem
 @export var useable_on_cooldown : bool = false
 @export var combo_scenes : Array[PackedScene] = []
 
+signal weapon_used(item_user : ItemUser)
+
 func _item_selected(item_container : SelectionItemContainer, item_user : ItemUser = null) -> void:
 	if item_user != null:
 		item_user.item_user_metadata["combo_progress"] = 0
@@ -13,6 +15,7 @@ func spawn_network_entity(_item_user : SpatialItemUser, item_use_node : Node3D) 
 	if (!useable_on_cooldown) and _item_user.item_use_cooldown > 0.0:
 		return
 
+	weapon_used.emit(_item_user)
 	_item_user.item_use_cooldown = item_cooldown
 	
 	var cur_instantiate_scene : PackedScene = scene_to_instantiate

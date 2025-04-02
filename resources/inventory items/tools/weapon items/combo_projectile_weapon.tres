@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://scripts/resources/damage/damage_resource.gd" id="6_ca57q"]
 [ext_resource type="Texture2D" uid="uid://blb8dwjc4v0gg" path="res://sprites/testing/test_texture.png" id="7_28xo0"]
 [ext_resource type="Script" path="res://scripts/resources/inventory/items/weapon_item.gd" id="8_xg38k"]
-[ext_resource type="PackedScene" uid="uid://btcr3jt8wthqt" path="res://scenes/items/tools/test_tool_display_1.tscn" id="9_yxmtr"]
+[ext_resource type="PackedScene" uid="uid://b8c8vsoces4pj" path="res://scenes/items/tools/weapons/sword_1_display.tscn" id="12_ttssh"]
 
 [sub_resource type="Resource" id="Resource_p4hvq"]
 script = ExtResource("6_ca57q")
@@ -53,7 +53,7 @@ scene_to_instantiate = SubResource("PackedScene_sjxy2")
 spawn_from_position = 0
 copy_rotation = true
 position_offset = 0.6
-tool_scene = ExtResource("9_yxmtr")
+tool_scene = ExtResource("12_ttssh")
 select_string = "Select"
 name = "Sword"
 description = "Item description"

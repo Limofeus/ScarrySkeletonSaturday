@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bp4nm6o3360qd"]
+[gd_scene load_steps=18 format=3 uid="uid://bp4nm6o3360qd"]
 
 [ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_3k84p"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="2_owhao"]
@@ -16,20 +16,24 @@ script = ExtResource("6_y8mpl")
 damage_ammount = 2.0
 damage_type = 0
 
-[sub_resource type="Curve" id="Curve_f8krt"]
-_data = [Vector2(0, 0), 0.0, 2.0, 0, 1, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 1, 0]
+[sub_resource type="Curve" id="Curve_aq1v7"]
+_data = [Vector2(0, 0), 0.0, 9.81218, 0, 0, Vector2(0.253086, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jb8ja"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_crryy")
-shader_parameter/main_color = Color(0, 0, 0, 1)
+shader_parameter/main_color = Color(0.784314, 0.784314, 0.784314, 1)
 shader_parameter/projectile_lifetime = 0.0
 shader_parameter/hit_texture = ExtResource("8_8dccc")
 
-[sub_resource type="Curve" id="Curve_7cwke"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+[sub_resource type="Curve" id="Curve_tgsv2"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_qophy"]
+_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_euxgr"]
@@ -77,14 +81,14 @@ network_entity = NodePath("../..")
 [node name="SlashShader" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("projectile")]
 script = ExtResource("7_sevmf")
 projectile = NodePath("..")
-curve_mapping = SubResource("Curve_f8krt")
+curve_mapping = SubResource("Curve_aq1v7")
 shader_material = SubResource("ShaderMaterial_jb8ja")
 
 [node name="SlashRotation" type="Node" parent="SharedLogic/Projectile" node_paths=PackedStringArray("projectile", "visual_to_rotate")]
 script = ExtResource("7_feto3")
 projectile = NodePath("..")
 visual_to_rotate = NodePath("../../../SpawnPosition/Projectile/SlashEffect")
-curve_mapping = SubResource("Curve_7cwke")
+curve_mapping = SubResource("Curve_tgsv2")
 start_rotation = Vector3(0, 1, 0)
 end_rotation = Vector3(0, -1, 0)
 
@@ -92,7 +96,7 @@ end_rotation = Vector3(0, -1, 0)
 script = ExtResource("7_feto3")
 projectile = NodePath("..")
 visual_to_rotate = NodePath("../../../SpawnPosition/Projectile/SubSlash")
-curve_mapping = SubResource("Curve_7cwke")
+curve_mapping = SubResource("Curve_qophy")
 start_rotation = Vector3(0, 3, 0)
 end_rotation = Vector3(0, -0.5, 0)
 

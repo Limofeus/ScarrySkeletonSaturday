@@ -2,7 +2,7 @@
 
 class_name SpringUtility
 
-class SpringParams:
+class SpringParams: #maybe resourcify it in another class to allow easier exporting
 	var pos : float
 	var vel : float
 
@@ -102,5 +102,5 @@ static func UpdateSpringMotion(springParams : SpringParams, equilibriumPos : flo
 		#Pass SpringParams in to this function to update it according to motion params
 
 #Or just call this function ig..
-static func UpdateSpring(springParams : SpringParams, equilibriumPos : float, delta : float, angularFreq : float = 5.0, dampingRatio : float = 1.0):
+static func UpdateSpring(springParams : SpringParams, equilibriumPos : float, delta : float, angularFreq : float = 10.0, dampingRatio : float = 1.0):
 	UpdateSpringMotion(springParams, equilibriumPos, CalcSpringMotionParams(delta, angularFreq, dampingRatio))

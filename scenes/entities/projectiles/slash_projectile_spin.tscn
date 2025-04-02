@@ -24,7 +24,7 @@ point_count = 4
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("8_w46ip")
-shader_parameter/main_color = Color(0, 0, 0, 1)
+shader_parameter/main_color = Color(0.784314, 0.784314, 0.784314, 1)
 shader_parameter/projectile_lifetime = 0.0
 shader_parameter/hit_texture = ExtResource("9_apm1l")
 
@@ -89,7 +89,6 @@ spin_speed = 20.0
 [node name="SpawnPosition" type="Node3D" parent="."]
 
 [node name="Projectile" type="Node3D" parent="SpawnPosition"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="SlashEffect" type="MeshInstance3D" parent="SpawnPosition/Projectile"]
 transform = Transform3D(-1.00536e-07, 0, 2.3, 0, 2.3, 0, -2.3, 0, -1.00536e-07, 0, 0, 0)

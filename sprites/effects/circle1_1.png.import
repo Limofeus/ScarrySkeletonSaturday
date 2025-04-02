@@ -2,21 +2,20 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2m4p1keindis"
-path.s3tc="res://.godot/imported/MagicCircle1-min.png-5375874cb6caef3d8333393cac466d6f.s3tc.ctex"
+uid="uid://dhxfkl1b3x4bf"
+path="res://.godot/imported/circle1_1.png-8a80895d54da798015f0947e91598a47.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/menu/MagicCircle1-min.png"
-dest_files=["res://.godot/imported/MagicCircle1-min.png-5375874cb6caef3d8333393cac466d6f.s3tc.ctex"]
+source_file="res://sprites/effects/circle1_1.png"
+dest_files=["res://.godot/imported/circle1_1.png-8a80895d54da798015f0947e91598a47.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1

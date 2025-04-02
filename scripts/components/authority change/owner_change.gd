@@ -1,6 +1,9 @@
 extends EntityComponent
 class_name OwnerChangeComponent
 
+func set_new_owner_to_current_peer(force_change_owner : bool = false) -> void:
+	set_new_owner(multiplayer.get_unique_id(), force_change_owner)
+
 func set_new_owner(new_owner : int, force_change_owner : bool = false) -> void:
 	
 	#Do not change owner if new_owner is same as current
