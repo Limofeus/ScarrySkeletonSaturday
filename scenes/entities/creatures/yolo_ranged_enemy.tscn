@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bw2i466uid2v5"]
+[gd_scene load_steps=52 format=3 uid="uid://bw2i466uid2v5"]
 
 [ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_g8fx4"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_vtbnj"]
@@ -17,7 +17,9 @@
 [ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="15_4mx22"]
 [ext_resource type="Script" path="res://scripts/components/inventory/creature_inventory_component.gd" id="16_55iqr"]
 [ext_resource type="Script" path="res://scripts/visual/creatures/healthbars/healthbar_updater.gd" id="16_hqov5"]
+[ext_resource type="Script" path="res://scripts/visual/creatures/projectile_hit_effect.gd" id="17_7wini"]
 [ext_resource type="Script" path="res://scripts/resources/inventory/items/inventory_item.gd" id="17_gsjbo"]
+[ext_resource type="PackedScene" uid="uid://dvoqk8td5oyvy" path="res://scenes/visual/effects/hit_effect.tscn" id="18_csu5p"]
 [ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/sword_1_weapon.tres" id="18_nip3u"]
 [ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/staff_1_weapon.tres" id="19_ec6vj"]
 [ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/display_tool_item.gd" id="20_vjqr2"]
@@ -255,6 +257,11 @@ killable_attributes = NodePath("..")
 main_healthbar = NodePath("../../../Creature/Head/MonsterAttackScaler/Healthbar/HealthbarHolder/HitBar/HealthBar")
 effect_healthbar = NodePath("../../../Creature/Head/MonsterAttackScaler/Healthbar/HealthbarHolder/HitBar")
 
+[node name="ProjectileHitEffect" type="Node" parent="SharedLogic/CreatureAttributes" node_paths=PackedStringArray("killable_attributes")]
+script = ExtResource("17_7wini")
+killable_attributes = NodePath("..")
+hit_effect_scene = ExtResource("18_csu5p")
+
 [node name="CreatureInventoryComponent" type="Node" parent="SharedLogic" node_paths=PackedStringArray("network_entity")]
 script = ExtResource("16_55iqr")
 inventory_size = 5
@@ -295,9 +302,6 @@ idle_sprite_sheet = ExtResource("29_o6eu0")
 network_entity = NodePath("../..")
 
 [node name="Creature" type="CharacterBody3D" parent="."]
-
-[node name="AudioListener3D" type="AudioListener3D" parent="Creature"]
-current = true
 
 [node name="PlayerCollider" type="CollisionShape3D" parent="Creature"]
 shape = SubResource("CapsuleShape3D_ws0uc")

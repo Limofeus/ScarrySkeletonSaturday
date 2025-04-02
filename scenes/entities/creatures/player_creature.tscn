@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://bqdtx48rr07yc"]
+[gd_scene load_steps=65 format=3 uid="uid://bqdtx48rr07yc"]
 
 [ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_63m7l"]
 [ext_resource type="Script" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_etd3o"]
@@ -21,8 +21,11 @@
 [ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/sword_1_weapon.tres" id="19_640nl"]
 [ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/staff_1_weapon.tres" id="20_bfh14"]
 [ext_resource type="Script" path="res://scripts/visual/creatures/healthbars/healthbar_updater.gd" id="21_3dyv3"]
+[ext_resource type="Script" path="res://scripts/utility/quick actions/disable_node_array.gd" id="22_u1yxl"]
 [ext_resource type="Resource" uid="uid://bb1do7tbrgse4" path="res://resources/inventory items/tools/weapon items/dagger_1_weapon.tres" id="23_8it18"]
 [ext_resource type="Resource" uid="uid://040yl843thoa" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item_2.tres" id="23_awi5f"]
+[ext_resource type="Script" path="res://scripts/visual/creatures/projectile_hit_effect.gd" id="23_ckyfg"]
+[ext_resource type="PackedScene" uid="uid://dvoqk8td5oyvy" path="res://scenes/visual/effects/hit_effect.tscn" id="24_5ig3w"]
 [ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/fancy tool display/fancy_tool_display_updater.gd" id="24_ivi5d"]
 [ext_resource type="Script" path="res://scripts/components/sync/creature_sprite_sheet_sync.gd" id="27_7ghp2"]
 [ext_resource type="Script" path="res://scripts/visual/creatures/sprite_sheet_billboard.gd" id="27_e2f3t"]
@@ -258,8 +261,8 @@ creature_name = "Player"
 character_body = NodePath("../../Player")
 head_node = NodePath("../../Player/Head")
 look_node = NodePath("../../Player/Head/CameraMount")
-max_health = 666.0
-health = 666.0
+max_health = 10.0
+health = 10.0
 spatial_node = NodePath("../../Player")
 network_entity = NodePath("../..")
 
@@ -268,6 +271,16 @@ script = ExtResource("21_3dyv3")
 killable_attributes = NodePath("..")
 main_healthbar = NodePath("../../../Player/Head/Healthbar/HealthbarHolder/HitBar/HealthBar")
 effect_healthbar = NodePath("../../../Player/Head/Healthbar/HealthbarHolder/HitBar")
+
+[node name="DeathDisableComponents" type="Node" parent="SharedLogic/CreatureAttributes" node_paths=PackedStringArray("node_array", "hide_nodes")]
+script = ExtResource("22_u1yxl")
+node_array = [NodePath(".."), NodePath("../../../OwnerLogic/MovementStateMachine"), NodePath("../../../OwnerLogic/PlayerHotbar"), NodePath("../../../OwnerLogic"), NodePath("../../../Player/PlayerCollider")]
+hide_nodes = [NodePath("../../../Player/Head/FancyToolDisplayer"), NodePath("../../../Player/Head/SpriteSheetBillboard"), NodePath("../../../Player/Head/Healthbar")]
+
+[node name="ProjectileHitEffect" type="Node" parent="SharedLogic/CreatureAttributes" node_paths=PackedStringArray("killable_attributes")]
+script = ExtResource("23_ckyfg")
+killable_attributes = NodePath("..")
+hit_effect_scene = ExtResource("24_5ig3w")
 
 [node name="PlayerInventory" type="Node" parent="SharedLogic" node_paths=PackedStringArray("player_hotbar_component", "network_entity")]
 script = ExtResource("29_8gigg")
@@ -312,9 +325,6 @@ network_entity = NodePath("../..")
 
 [node name="Player" type="CharacterBody3D" parent="."]
 collision_layer = 2
-
-[node name="AudioListener3D" type="AudioListener3D" parent="Player"]
-current = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
 visible = false
@@ -444,3 +454,4 @@ shape = SubResource("CapsuleShape3D_qlogj")
 [connection signal="entity_ready" from="." to="OwnerLogic/PlayerHotbar" method="connect_container_to_hotbar"]
 [connection signal="entity_ready" from="." to="SharedLogic/PlayerInventory" method="add_initial_items"]
 [connection signal="primary_action" from="OwnerLogic/PlayerInputWIP" to="OwnerLogic/CreatureItemUser" method="use_selected_item"]
+[connection signal="on_death" from="SharedLogic/CreatureAttributes" to="SharedLogic/CreatureAttributes/DeathDisableComponents" method="disable_nodes"]

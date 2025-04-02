@@ -164,6 +164,9 @@ shadow_enabled = true
 
 [node name="UI Layer" type="CanvasLayer" parent="."]
 
+[node name="BackBufferCopy" type="BackBufferCopy" parent="UI Layer"]
+copy_mode = 2
+
 [node name="UI" type="Control" parent="UI Layer"]
 layout_mode = 3
 anchors_preset = 15

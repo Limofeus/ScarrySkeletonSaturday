@@ -15,7 +15,7 @@ func _ready():
 	effect_healthbar.visible = healthbars_visible
 
 func update_healthbars():
-	healthbars_visible = true
+	healthbars_visible = killable_attributes.health > 0.0
 	effect_healthbar.visible = healthbars_visible
 	main_healthbar.value = killable_attributes.health / killable_attributes.max_health
 	print("UPD HEalthbar Health: " + str(killable_attributes.health) + " / " + str(killable_attributes.max_health))
