@@ -20,7 +20,7 @@
 [ext_resource type="Script" path="res://scripts/resources/inventory/items/inventory_item.gd" id="16_xk4rs"]
 [ext_resource type="Script" path="res://scripts/visual/creatures/projectile_hit_effect.gd" id="17_2s1ix"]
 [ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/sword_1_weapon.tres" id="17_4bqor"]
-[ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/staff_1_weapon.tres" id="17_xfm8a"]
+[ext_resource type="Resource" path="res://resources/inventory items/tools/weapon items/staff_1_weapon.tres" id="17_xfm8a"]
 [ext_resource type="Script" path="res://scripts/components/inventory/inventory visual/display_tool_item.gd" id="18_4dv4h"]
 [ext_resource type="PackedScene" uid="uid://dvoqk8td5oyvy" path="res://scenes/visual/effects/hit_effect.tscn" id="18_pnlwv"]
 [ext_resource type="Resource" uid="uid://bb1do7tbrgse4" path="res://resources/inventory items/tools/weapon items/dagger_1_weapon.tres" id="19_1np74"]
