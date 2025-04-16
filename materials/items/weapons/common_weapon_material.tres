@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://ce4sq6iwxvtjf"]
 
-[ext_resource type="Shader" path="res://shaders/spatial/weapon_display_common.gdshader" id="1_s0hb0"]
+[ext_resource type="Shader" uid="uid://b2iv8fr3qnepp" path="res://shaders/spatial/weapon_display_common.gdshader" id="1_s0hb0"]
 
 [resource]
 render_priority = 0
