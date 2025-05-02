@@ -4,13 +4,13 @@
 [ext_resource type="PackedScene" uid="uid://bp4nm6o3360qd" path="res://scenes/entities/projectiles/slash_projectile_left.tscn" id="2_priy5"]
 [ext_resource type="PackedScene" uid="uid://byk8uupvnaqsv" path="res://scenes/entities/projectiles/slash_projectile_spin.tscn" id="3_61ivu"]
 [ext_resource type="Texture2D" uid="uid://c3qn0ou0nvrek" path="res://sprites/items/weapons/icon_sowrd_1.png" id="4_6r1xi"]
-[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="5_foyd7"]
-[ext_resource type="Script" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="6_qhip5"]
-[ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="7_26sou"]
-[ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="8_lal2c"]
-[ext_resource type="Script" path="res://scripts/components/basic/projectile_component.gd" id="9_8xnbb"]
-[ext_resource type="Script" path="res://scripts/resources/damage/damage_resource.gd" id="10_kcl2y"]
-[ext_resource type="Script" path="res://scripts/resources/inventory/items/weapon_item.gd" id="11_7x3a4"]
+[ext_resource type="Script" uid="uid://cwi5c0lmgvugw" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="5_foyd7"]
+[ext_resource type="Script" uid="uid://1cpx5jpkildt" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="6_qhip5"]
+[ext_resource type="Script" uid="uid://dpxu25buoavix" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="7_26sou"]
+[ext_resource type="Script" uid="uid://dgn8lixy52hug" path="res://scripts/components/entity destruction/entity_destructor.gd" id="8_lal2c"]
+[ext_resource type="Script" uid="uid://b3ak36ulon771" path="res://scripts/components/basic/projectile_component.gd" id="9_8xnbb"]
+[ext_resource type="Script" uid="uid://b3tcmigxaglcv" path="res://scripts/resources/damage/damage_resource.gd" id="10_kcl2y"]
+[ext_resource type="Script" uid="uid://bhpfe1002alcr" path="res://scripts/resources/inventory/items/weapon_item.gd" id="11_7x3a4"]
 [ext_resource type="PackedScene" uid="uid://b8c8vsoces4pj" path="res://scenes/items/tools/weapons/sword_1_display.tscn" id="12_67ugd"]
 
 [sub_resource type="Resource" id="Resource_p4hvq"]
@@ -58,5 +58,5 @@ tool_scene = ExtResource("12_67ugd")
 select_string = "Select"
 name = "Sword"
 description = "Item description"
-stackable = false
+max_stack_size = 1
 icon = ExtResource("4_6r1xi")

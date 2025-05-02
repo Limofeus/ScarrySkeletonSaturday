@@ -3,13 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://bm7n485u7id3k" path="res://scenes/entities/projectiles/slash_projectile_right_small.tscn" id="1_tqk2w"]
 [ext_resource type="PackedScene" uid="uid://bh7tcqcjywh1y" path="res://scenes/entities/projectiles/slash_projectile_left_small.tscn" id="2_w6ee3"]
 [ext_resource type="Texture2D" uid="uid://b122hjneo1ghw" path="res://sprites/items/weapons/icon_dagger_1.png" id="3_s3u2b"]
-[ext_resource type="Script" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="4_ph0py"]
-[ext_resource type="Script" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="5_kwrpm"]
-[ext_resource type="Script" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="6_jpmxx"]
-[ext_resource type="Script" path="res://scripts/components/entity destruction/entity_destructor.gd" id="7_obmfk"]
-[ext_resource type="Script" path="res://scripts/components/basic/projectile_component.gd" id="8_f6135"]
-[ext_resource type="Script" path="res://scripts/resources/damage/damage_resource.gd" id="9_dgicj"]
-[ext_resource type="Script" path="res://scripts/resources/inventory/items/weapon_item.gd" id="10_xbqfe"]
+[ext_resource type="Script" uid="uid://cwi5c0lmgvugw" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="4_ph0py"]
+[ext_resource type="Script" uid="uid://1cpx5jpkildt" path="res://scripts/components/spawn components/projectile_spawn_component.gd" id="5_kwrpm"]
+[ext_resource type="Script" uid="uid://dpxu25buoavix" path="res://scripts/components/spawn components/enable_processing_after_spawn.gd" id="6_jpmxx"]
+[ext_resource type="Script" uid="uid://dgn8lixy52hug" path="res://scripts/components/entity destruction/entity_destructor.gd" id="7_obmfk"]
+[ext_resource type="Script" uid="uid://b3ak36ulon771" path="res://scripts/components/basic/projectile_component.gd" id="8_f6135"]
+[ext_resource type="Script" uid="uid://b3tcmigxaglcv" path="res://scripts/resources/damage/damage_resource.gd" id="9_dgicj"]
+[ext_resource type="Script" uid="uid://bhpfe1002alcr" path="res://scripts/resources/inventory/items/weapon_item.gd" id="10_xbqfe"]
 [ext_resource type="PackedScene" uid="uid://bsg2v5f24bv4e" path="res://scenes/items/tools/weapons/dagger_1_display.tscn" id="11_6wx1w"]
 
 [sub_resource type="Resource" id="Resource_p4hvq"]
@@ -57,5 +57,5 @@ tool_scene = ExtResource("11_6wx1w")
 select_string = "Select"
 name = "Dagger"
 description = "Item description"
-stackable = false
+max_stack_size = 1
 icon = ExtResource("3_s3u2b")
