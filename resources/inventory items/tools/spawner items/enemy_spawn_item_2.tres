@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://blb8dwjc4v0gg" path="res://sprites/testing/test_texture.png" id="1_28jun"]
 [ext_resource type="PackedScene" uid="uid://bw2i466uid2v5" path="res://scenes/entities/creatures/yolo_ranged_enemy.tscn" id="2_011ne"]
-[ext_resource type="Script" uid="uid://jppd5ysq3ci8" path="res://scripts/resources/inventory/items/entity_spawner_item.gd" id="3_5vmrr"]
+[ext_resource type="Script" path="res://scripts/resources/inventory/items/entity_spawner_item.gd" id="3_5vmrr"]
 [ext_resource type="PackedScene" uid="uid://btcr3jt8wthqt" path="res://scenes/items/tools/test_tool_display_1.tscn" id="4_f5vm6"]
 
 [resource]
