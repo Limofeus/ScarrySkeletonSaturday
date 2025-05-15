@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://bqdtx48rr07yc"]
+[gd_scene load_steps=76 format=3 uid="uid://bqdtx48rr07yc"]
 
 [ext_resource type="Script" uid="uid://cwi5c0lmgvugw" path="res://scripts/networking/network entities/interactable_network_entity.gd" id="1_63m7l"]
 [ext_resource type="Script" uid="uid://urhqvfpddfc2" path="res://scripts/components/spawn components/spawn_transform_setter.gd" id="2_etd3o"]
@@ -19,11 +19,14 @@
 [ext_resource type="Script" uid="uid://dcc48kjd0o4v5" path="res://scripts/debug/testing/test_inv_item_adder.gd" id="15_xaj14"]
 [ext_resource type="Script" uid="uid://tqtqwrpn4m2x" path="res://scripts/resources/inventory/items/inventory_item.gd" id="16_tlce0"]
 [ext_resource type="Resource" uid="uid://hr26l03c7p77" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item_1.tres" id="17_fvq0r"]
+[ext_resource type="Script" uid="uid://tyql57nns2bm" path="res://scripts/components/tinkering/tinkereres/directional_shapecast_tinkerer.gd" id="17_x6h4n"]
 [ext_resource type="Resource" uid="uid://bpvdms7w0up6v" path="res://resources/inventory items/tools/spawner items/roomba_spawner_item.tres" id="18_x1fg6"]
 [ext_resource type="Resource" uid="uid://b7tqoytns3x4d" path="res://resources/inventory items/tools/weapon items/sword_1_weapon.tres" id="19_640nl"]
 [ext_resource type="Resource" uid="uid://1a3tdlhxsylr" path="res://resources/inventory items/tools/weapon items/staff_1_weapon.tres" id="20_bfh14"]
+[ext_resource type="Resource" uid="uid://c3f3100tm85xh" path="res://resources/inventory items/tools/weapon items/bow_1_weapon.tres" id="20_ckfm4"]
 [ext_resource type="Resource" uid="uid://b6l3kvm7xejds" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item_4.tres" id="20_uhsrm"]
 [ext_resource type="Script" uid="uid://dp26vonrii4k4" path="res://scripts/visual/creatures/healthbars/healthbar_updater.gd" id="21_3dyv3"]
+[ext_resource type="Resource" uid="uid://4f2plb3vwcur" path="res://resources/inventory items/tools/weapon items/sword_2_weapon.tres" id="21_aprpr"]
 [ext_resource type="Resource" uid="uid://d0bwe73d5rbc1" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item_5.tres" id="21_j76wl"]
 [ext_resource type="Resource" uid="uid://cq3yuh8ku484g" path="res://resources/inventory items/tools/spawner items/enemy_spawn_item_3.tres" id="22_8kbnr"]
 [ext_resource type="Script" uid="uid://dtga6lwq1vuxj" path="res://scripts/utility/quick actions/disable_node_array.gd" id="22_u1yxl"]
@@ -90,6 +93,9 @@ height = 1.75
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_dskx3"]
 radius = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_j76wl"]
+radius = 5.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8h034"]
 resource_local_to_scene = true
@@ -261,12 +267,18 @@ network_entity = NodePath("../..")
 
 [node name="--- Other --" type="Node" parent="OwnerLogic"]
 
+[node name="ShapecastTinkerer" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("dot_check_node", "tinker_shapecast", "network_entity")]
+script = ExtResource("17_x6h4n")
+dot_check_node = NodePath("../../Player/Head/CameraMount")
+tinker_shapecast = NodePath("../../Player/Head/CameraMount/ShapeCast3D")
+network_entity = NodePath("../..")
+
 [node name="--- Debugging & Testing ---" type="Node" parent="OwnerLogic"]
 
 [node name="DebugInvItemAdder" type="Node" parent="OwnerLogic" node_paths=PackedStringArray("player_inventory")]
 script = ExtResource("15_xaj14")
 player_inventory = NodePath("../../SharedLogic/PlayerInventory")
-debug_items = Array[ExtResource("16_tlce0")]([ExtResource("22_8kbnr"), ExtResource("20_uhsrm"), ExtResource("21_j76wl"), ExtResource("22_x6h4n"), ExtResource("18_x1fg6"), ExtResource("17_fvq0r"), ExtResource("23_awi5f")])
+debug_items = Array[ExtResource("16_tlce0")]([ExtResource("20_ckfm4"), ExtResource("21_aprpr"), ExtResource("22_8kbnr"), ExtResource("20_uhsrm"), ExtResource("21_j76wl"), ExtResource("22_x6h4n"), ExtResource("18_x1fg6"), ExtResource("17_fvq0r"), ExtResource("23_awi5f")])
 
 [node name="SharedLogic" type="Node" parent="."]
 
@@ -379,6 +391,14 @@ enabled = false
 target_position = Vector3(0, 0, -10)
 collision_mask = 7
 hit_back_faces = false
+
+[node name="ShapeCast3D" type="ShapeCast3D" parent="Player/Head/CameraMount"]
+enabled = false
+shape = SubResource("SphereShape3D_j76wl")
+target_position = Vector3(0, 0, -1)
+collision_mask = 16
+collide_with_areas = true
+collide_with_bodies = false
 
 [node name="FancyToolDisplayer" parent="Player/Head" instance=ExtResource("33_ef6d6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.95, -0.4)
